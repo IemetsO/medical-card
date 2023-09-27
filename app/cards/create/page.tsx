@@ -1,21 +1,25 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { nanoid } from "nanoid";
-import { useState, useEffect } from "react";
+import { Card } from "./../../../domains/cards/types";
+import { Button } from "@/components/uikit/button";
+import { Input } from "@/components/uikit/input";
 
-export default function Cards() {
-  type card = {
-    id: string;
-    name: string;
-    age: number;
-    gender: string;
-  };
+export default function Cards(card: Card) {
+  const router = useRouter();
 
-  const [card, setCard] = useState<card | null>(null);
+  const previousCards = JSON.parse(localStorage.getItem("cards")) || [];
+  const newCards = [...previousCards];
 
-  useEffect(() => {
-    localStorage.setItem("cards", JSON.stringify([card]));
-  }, [card]);
+  function createCard(name: string, age: number, gender: string) {
+    return (card = {
+      id: nanoid(),
+      name: name,
+      age: age,
+      gender: gender,
+    });
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,65 +27,42 @@ export default function Cards() {
     if (form.name.value === "" || form.name.age === "") {
       return;
     }
-    setCard({
-      id: nanoid(),
-      name: form.name.value,
-      age: form.age.value,
-      gender: form.gender.value,
-    });
+    createCard(form.name.value, form.age.value, form.gender.value);
+    newCards.push(card);
+    localStorage.setItem("cards", JSON.stringify(newCards));
+    router.push(`/cards/${card.id}`);
   };
 
   return (
-    <div className="mt-10">
-      <div className="mt-10 text-center">
-        <h2 className="text-grey font-bold">Внесіть дані Вашої дитини</h2>
+    <div className="mt-10 text-center">
+      <h2 className="text-grey font-bold">Внесіть дані Вашої дитини</h2>
 
-        <form className="flex-col mt-10" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Введіть ім'я"
-            className="ml-5"
-          />
+      <form className="flex-col mt-10" onSubmit={handleSubmit}>
+        <Input type="text" name="name" placeholder="Введіть ім'я" />
 
-          <div className="mt-10">
-            <input
-              type="number"
-              name="age"
-              placeholder="Введіть вік"
-              className="ml-5"
-            />
-          </div>
-          <div className=" mt-10">
-            <select name="gender">
-              <option value="Дівчинка">дівчинка</option>
-              <option value="Хлопчик">хлопчик</option>
-            </select>
-          </div>
-          <div>
-            <button
-              className=" bg-sky-500 hover:bg-sky-700 mt-10 mb-10 text-white font-bold py-2 px-4 rounded"
-              type="submit"
-            >
-              Створити карточку
-            </button>
-          </div>
-        </form>
-        <div className="mb-6">
-          <Link
-            className="p-6 bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
-            href="cards"
-          >
-            Перейти до карток
-          </Link>
+        <div className="mt-10">
+          <Input type="number" name="age" placeholder="Введіть вік" />
         </div>
-        <Link
-          className=" bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
-          href="/"
-        >
-          назад до головної сторінки
+        <div className=" mt-10">
+          <select name="gender">
+            <option value="Дівчинка">дівчинка</option>
+            <option value="Хлопчик">хлопчик</option>
+          </select>
+        </div>
+        <div>
+          <Button type="submit" className="mb-6 mt-5">
+            Створити карточку
+          </Button>
+        </div>
+      </form>
+      <div className="mb-6">
+        <Link href="cards">
+          <Button>Перейти до карток</Button>
         </Link>
       </div>
+      <Link href="/">
+        <Button>назад до головної сторінки</Button>
+      </Link>
     </div>
   );
 }

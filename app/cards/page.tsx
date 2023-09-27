@@ -1,18 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { Card } from "../../domains/cards/types";
+import { Button } from "@/components/uikit/button";
 
-// export async function getStaticProps() {
-//   const allCardsData = localStorage.getItem("cards");
-//   console.log(allCardsData);
-//   return {
-//     props: {
-//       allCardsData,
-//     },
-//   };
-// }
-
-export default function Cards() {
+export default function Cards(card: Card) {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
@@ -22,33 +14,26 @@ export default function Cards() {
     console.log(allCardsData);
   }, []);
 
-  let Section;
+  let sectionNode;
 
   if (!cards) {
-    Section = <section>Ви не створили жодної картки</section>;
+    sectionNode = <section>Ви не створили жодної картки</section>;
   } else {
-    Section = (
+    sectionNode = (
       <section>
         <h2 className="mt-10 hover:bg-sky-700 text-grey font-bold">
           Ваша дитина
         </h2>
         <ul>
-          {cards.map(
-            (card: {
-              id: string;
-              name: string;
-              age: number;
-              gender: string;
-            }) => (
-              <li key={card?.id} className="text-grey">
-                <Link href={"cards/id"}>{card?.name}</Link>
-                <br />
-                {card?.age}
-                <br />
-                {card?.gender}
-              </li>
-            )
-          )}
+          {cards.map((card: Card) => (
+            <li key={card?.id} className="text-grey">
+              <Link href={`cards/${card.id}`}>{card?.name}</Link>
+              <br />
+              {card?.age}
+              <br />
+              {card?.gender}
+            </li>
+          ))}
         </ul>
       </section>
     );
@@ -57,13 +42,10 @@ export default function Cards() {
   return (
     <div className="mt-10">
       <div className="mt-10 text-center">
-        {Section}
+        {sectionNode}
 
-        <Link
-          className=" bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded"
-          href="/"
-        >
-          назад до головної сторінки
+        <Link href="/">
+          <Button>назад до головної сторінки</Button>
         </Link>
       </div>
     </div>
