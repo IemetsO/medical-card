@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { nanoid } from "nanoid";
 import { Card } from "./../../../domains/cards/types";
 import { Button } from "@/components/uikit/button";
 import { Input } from "@/components/uikit/input";
+import { createCard } from "@/domains/cards/services";
 
 export default function Cards(card: Card) {
   const router = useRouter();
@@ -12,24 +12,19 @@ export default function Cards(card: Card) {
   const previousCards = JSON.parse(localStorage.getItem("cards")) || [];
   const newCards = [...previousCards];
 
-  function createCard(name: string, age: number, gender: string) {
-    return (card = {
-      id: nanoid(),
-      name: name,
-      age: age,
-      gender: gender,
-    });
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const form = e.currentTarget;
     if (form.name.value === "" || form.name.age === "") {
       return;
     }
-    createCard(form.name.value, form.age.value, form.gender.value);
-    newCards.push(card);
+
+    newCards.push(
+      createCard(form.name.value, form.age.value, form.gender.value)
+    );
     localStorage.setItem("cards", JSON.stringify(newCards));
+
     router.push(`/cards/${card.id}`);
   };
 
@@ -45,8 +40,8 @@ export default function Cards(card: Card) {
         </div>
         <div className=" mt-10">
           <select name="gender">
-            <option value="Дівчинка">дівчинка</option>
-            <option value="Хлопчик">хлопчик</option>
+            <option value="дівчинка">дівчинка</option>
+            <option value="хлопчик">хлопчик</option>
           </select>
         </div>
         <div>

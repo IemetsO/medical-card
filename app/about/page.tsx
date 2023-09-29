@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ListItem from "@/components/listItem";
+import ListItem from "@/components/list-item";
 
 export default function About() {
   return (
