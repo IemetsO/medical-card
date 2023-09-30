@@ -21,17 +21,17 @@ export default function Cards(card: Card) {
 
   let sectionNode;
 
-  if (!cards) {
+  if (cards.length < 1) {
     sectionNode = <section>Ви не створили жодної картки</section>;
   } else {
     sectionNode = (
       <section>
-        <h2 className="mt-10 text-grey">Ваша дитина</h2>
-        <div className="">
+        <h2 className="mt-10">Ваша дитина</h2>
+        <div>
           {cards.map((card: Card) => (
             <div
               key={card?.id}
-              className="text-grey max-w-md m-auto bg-gray-100 mt-5 rounded-md border-slate-400 flex flex-row justify-around items-center"
+              className=" max-w-md m-auto bg-gray-100 mt-5 rounded-md border-slate-400 flex flex-row justify-around items-center"
             >
               <Link
                 href={`cards/${card.id}`}
@@ -40,7 +40,7 @@ export default function Cards(card: Card) {
                 {card?.name}
               </Link>
               <div className="flex flex-row ">
-                <p className=" text-xs">{card?.age} років</p>
+                <p className=" text-xs">{card?.dateOfBirth}</p>
                 <p className=" text-xs ml-5" text-grey>
                   {card?.gender}
                 </p>
