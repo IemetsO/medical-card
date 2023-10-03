@@ -38,12 +38,6 @@ export default function CardId() {
     }
 
     return string;
-
-    // var ageDifMs = Date.now() - new Date(dateOfBirth).getTime();
-    // var ageDate = new Date(ageDifMs); // miliseconds from epoch
-    // let years = Math.abs(ageDate.getUTCFullYear() - 1970)
-    // let months =
-    // return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 
   return (
@@ -67,7 +61,7 @@ export default function CardId() {
       <Button
         className="mt-6"
         onClick={() => {
-          handleDelete;
+          handleDelete(card.id);
         }}
       >
         Видалити картку

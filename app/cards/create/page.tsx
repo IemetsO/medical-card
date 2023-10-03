@@ -57,13 +57,13 @@ export default function Cards(card: Card) {
         {formik.touched.name && formik.errors.name ? (
           <div className="text-red-500 text-xs">{formik.errors.name}</div>
         ) : null}
-        <div className="mt-10">
-          <p className="text-grey-50">Введіть дату народження</p>
+        <div className="mt-10 text-grey-25 ">
+          <p className="">Введіть дату народження</p>
           <Input
             type="Date"
-            name="dateOfBirth"
             value={formik.values.dateOfBirth}
             onChange={formik.handleChange}
+            className=" text-xs"
           />
           {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
             <div className="text-red-500 text-xs">{formik.errors.age}</div>
