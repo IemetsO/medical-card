@@ -1,53 +1,87 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { nanoid } from "nanoid";
 import { Card } from "./../../../domains/cards/types";
 import { Button } from "@/components/uikit/button";
 import { Input } from "@/components/uikit/input";
+import { createCard } from "@/domains/cards/services";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 export default function Cards(card: Card) {
   const router = useRouter();
 
-  const previousCards = JSON.parse(localStorage.getItem("cards")) || [];
-  const newCards = [...previousCards];
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      dateOfBirth: "",
+      gender: "",
+    },
 
-  function createCard(name: string, age: number, gender: string) {
-    return (card = {
-      id: nanoid(),
-      name: name,
-      age: age,
-      gender: gender,
-    });
-  }
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .max(50, "Must be 50 characters or less")
+        .required("Обов'язкове поле"),
+      dateOfBirth: Yup.string().required("Обов'язкове поле"),
+      gender: Yup.string().required("Обов'язкове поле"),
+    }),
+    onSubmit: (values) => {
+      const newCard = createCard(
+        values.name.toUpperCase(),
+        values.dateOfBirth,
+        values.gender
+      );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    if (form.name.value === "" || form.name.age === "") {
-      return;
-    }
-    createCard(form.name.value, form.age.value, form.gender.value);
-    newCards.push(card);
-    localStorage.setItem("cards", JSON.stringify(newCards));
-    router.push(`/cards/${card.id}`);
-  };
+      router.push(`/cards/${newCard.id}`);
+    },
+  });
 
   return (
     <div className="mt-10 text-center">
       <h2 className="text-grey font-bold">Внесіть дані Вашої дитини</h2>
 
-      <form className="flex-col mt-10" onSubmit={handleSubmit}>
-        <Input type="text" name="name" placeholder="Введіть ім'я" />
+      <form className="flex-col mt-10" onSubmit={formik.handleSubmit}>
+        <Input
+          type="text"
+          name="name"
+          value={formik.values.name}
+          placeholder="Введіть ім'я"
+          onChange={formik.handleChange}
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="text-red-500 text-xs">{formik.errors.name}</div>
+        ) : null}
+        <div className="mt-10 text-grey-25 ">
+          <p className="">Введіть дату народження</p>
+          <Input
+            type="Date"
+            name="dateOfBirth"
+            value={formik.values.dateOfBirth}
+            className="text-xs"
+            onChange={formik.handleChange}
+          />
+          {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
+            <div className="text-red-500 text-xs">
+              {formik.errors.dateOfBirth}
+            </div>
+          ) : null}
+        </div>
 
         <div className="mt-10">
-          <Input type="number" name="age" placeholder="Введіть вік" />
-        </div>
-        <div className=" mt-10">
-          <select name="gender">
-            <option value="Дівчинка">дівчинка</option>
-            <option value="Хлопчик">хлопчик</option>
+          <select
+            name="gender"
+            value={formik.values.gender}
+            onChange={formik.handleChange}
+          >
+            <option value="" selected disabled>
+              Оберіть стать
+            </option>
+            <option value="дівчинка">дівчинка</option>
+            <option value="хлопчик">хлопчик</option>
           </select>
+          {formik.touched.gender && formik.errors.gender ? (
+            <div className="text-red-500 text-xs">{formik.errors.gender}</div>
+          ) : null}
         </div>
         <div>
           <Button type="submit" className="mb-6 mt-5">
@@ -56,7 +90,7 @@ export default function Cards(card: Card) {
         </div>
       </form>
       <div className="mb-6">
-        <Link href="cards">
+        <Link href="/cards">
           <Button>Перейти до карток</Button>
         </Link>
       </div>
