@@ -2,29 +2,60 @@ import { nanoid } from "nanoid";
 import { Card } from "./types";
 
 
- function createCard(name: string, dateOfBirth: string, gender: string) {
-    let newCard: Card
-  
-    return (newCard = {
-      id: nanoid(),
-      name: name,
-      dateOfBirth: dateOfBirth,
-      gender: gender,
-    });
+export function createCard(name: string, dateOfBirth: string, gender: string) {
+  const newCard = {
+    id: nanoid(),
+    name: name,
+    dateOfBirth: dateOfBirth,
+    gender: gender,
   }
 
-  function deleteCard (id:string) {
-    let allCardsData = JSON.parse(localStorage.getItem("cards"));
-    const deleteCardWithId = allCardsData.find((e: Card)=>e.id ===id)
-    let index = allCardsData.indexOf(deleteCardWithId)
-    allCardsData.splice(index, 1) 
-    localStorage.setItem("cards", JSON.stringify(allCardsData));
+  saveCard(newCard)
+
+  return newCard}
+
+  export  function deleteCard (id:string) {
+    const cards = getCards()
+    const index = cards.findIndex((e: Card)=>e.id ===id)
+    cards.splice(index, 1) 
+    localStorage.setItem("cards", JSON.stringify(cards));
 }
 
-function showCard (id: string){
-    let allCardsData = JSON.parse(localStorage.getItem("cards"));
-    const CardWithId = allCardsData.find((e: Card)=>e.id ===id);
-     return CardWithId
+export function getCardById (id: string){
+  const cards = getCards()
+    return cards.find((e: Card)=>e.id ===id);
 }
 
- export {createCard, deleteCard, showCard}
+
+export function getCards() {
+  const cardsString = localStorage.getItem('cards')
+  if (!cardsString) {
+    return []
+  }
+
+  return JSON.parse(localStorage.getItem('cards'))
+}
+
+
+export function saveCard(newCard: Card) {
+  const cards = getCards()
+
+  localStorage.setItem('cards', JSON.stringify([...cards, newCard]))
+}
+
+export function calculateAge(dateOfBirth: string) {
+  const today = new Date();
+  const years = today.getFullYear() - new Date(dateOfBirth).getFullYear();
+
+  const months = today.getMonth() - new Date(dateOfBirth).getMonth();
+
+  const days = Math.round(
+    (today.getTime() - new Date(dateOfBirth).getTime()) / 86400000
+  );
+
+  if (years === 0 && months === 0) {
+    return `вік ${days} днів`;
+  } else {
+    return `вік ${years} років ${months} місяців`;
+  }
+}

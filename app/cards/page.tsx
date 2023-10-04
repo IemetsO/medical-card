@@ -3,25 +3,25 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Card } from "../../domains/cards/types";
 import { Button } from "@/components/uikit/button";
-import { deleteCard } from "@/domains/cards/services";
+import { deleteCard, getCards } from "@/domains/cards/services";
 
 export default function Cards(card: Card) {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    let allCardsData = JSON.parse(localStorage.getItem("cards"));
+    const allCardsData = getCards();
     setCards(allCardsData);
   }, []);
 
   function handleDelete(id: string) {
     deleteCard(id);
-    let allCardsData = JSON.parse(localStorage.getItem("cards"));
+    const allCardsData = getCards();
     setCards(allCardsData);
   }
 
   let sectionNode;
 
-  if (cards.length < 1) {
+  if (cards?.length < 1) {
     sectionNode = <section>Ви не створили жодної картки</section>;
   } else {
     sectionNode = (

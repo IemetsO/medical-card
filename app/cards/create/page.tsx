@@ -20,27 +20,21 @@ export default function Cards(card: Card) {
 
     validationSchema: Yup.object({
       name: Yup.string()
-        .max(15, "Must be 15 characters or less")
+        .max(50, "Must be 50 characters or less")
         .required("Обов'язкове поле"),
       dateOfBirth: Yup.string().required("Обов'язкове поле"),
       gender: Yup.string().required("Обов'язкове поле"),
     }),
     onSubmit: (values) => {
-      console.log(values);
       const newCard = createCard(
         values.name.toUpperCase(),
         values.dateOfBirth,
         values.gender
       );
-      newCards.push(newCard);
-      localStorage.setItem("cards", JSON.stringify(newCards));
 
       router.push(`/cards/${newCard.id}`);
     },
   });
-
-  const previousCards = JSON.parse(localStorage.getItem("cards")) || [];
-  const newCards = [...previousCards];
 
   return (
     <div className="mt-10 text-center">
@@ -51,8 +45,8 @@ export default function Cards(card: Card) {
           type="text"
           name="name"
           value={formik.values.name}
-          onChange={formik.handleChange}
           placeholder="Введіть ім'я"
+          onChange={formik.handleChange}
         />
         {formik.touched.name && formik.errors.name ? (
           <div className="text-red-500 text-xs">{formik.errors.name}</div>
@@ -61,16 +55,19 @@ export default function Cards(card: Card) {
           <p className="">Введіть дату народження</p>
           <Input
             type="Date"
+            name="dateOfBirth"
             value={formik.values.dateOfBirth}
+            className="text-xs"
             onChange={formik.handleChange}
-            className=" text-xs"
           />
           {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
-            <div className="text-red-500 text-xs">{formik.errors.age}</div>
+            <div className="text-red-500 text-xs">
+              {formik.errors.dateOfBirth}
+            </div>
           ) : null}
         </div>
 
-        <div className=" mt-10">
+        <div className="mt-10">
           <select
             name="gender"
             value={formik.values.gender}

@@ -3,42 +3,28 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/uikit/button";
-import { showCard } from "@/domains/cards/services";
-import { Input } from "../../../components/uikit/input";
-import { deleteCard } from "@/domains/cards/services";
+import { Input } from "@/components/uikit/input";
+import {
+  getCardById,
+  deleteCard,
+  calculateAge,
+} from "@/domains/cards/services";
 
-export default function CardId() {
-  const params = useParams();
+export default function CardItem() {
+  const { id } = useParams();
   const router = useRouter();
 
-  const id = params.id;
-  console.log(params);
-  const card = showCard(id);
+  const card = getCardById(id);
 
-  function handleDelete(id: string) {
-    deleteCard(params.id);
+  function handleDelete(id) {
+    deleteCard(id);
     router.push("/cards");
   }
 
-  function calculateAge(dateOfBirth) {
-    let today = new Date();
-    let age = today.getFullYear() - new Date(dateOfBirth).getFullYear();
-
-    let m = today.getMonth() - new Date(dateOfBirth).getMonth();
-
-    let d = Math.round(
-      (today.getTime() - new Date(dateOfBirth).getTime()) / 86400000
-    );
-    let string;
-
-    if (age === 0 && m === 0) {
-      string = `вік ${d} днів`;
-    } else {
-      string = `вік ${age} років ${m} місяців`;
-    }
-
-    return string;
-  }
+  //   if (!card) {
+  //     toast.error("Карточка не знайдена")
+  //     return null
+  //  }
 
   return (
     <div className="max-w-md m-auto bg-gray-100 mt-5 rounded-md border-slate-400 text-center ">
@@ -58,12 +44,7 @@ export default function CardId() {
         <Button className="mt-6">назад до головної сторінки</Button>
       </Link>
 
-      <Button
-        className="mt-6"
-        onClick={() => {
-          handleDelete(card.id);
-        }}
-      >
+      <Button className="mt-6" onClick={handleDelete}>
         Видалити картку
       </Button>
     </div>
