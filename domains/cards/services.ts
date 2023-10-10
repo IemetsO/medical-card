@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid";
 import { Card } from "./types";
+import {CardRecord} from "./types"
 
 
 export function createCard(name: string, dateOfBirth: string, gender: string) {
@@ -8,6 +9,7 @@ export function createCard(name: string, dateOfBirth: string, gender: string) {
     name: name,
     dateOfBirth: dateOfBirth,
     gender: gender,
+    records: [],
   }
 
   saveCard(newCard)
@@ -58,4 +60,32 @@ export function calculateAge(dateOfBirth: string) {
   } else {
     return `вік ${years} років ${months} місяців`;
   }
+}
+
+
+export function updateCard(id: string, updatedCard: Card) {
+  const cards = getCards()
+  const index = cards.findIndex((e: Card)=>e.id ===id)
+  cards.splice(index, 1, updatedCard) 
+  // cards[index]={...cards[index], updatedCard}
+ 	localStorage.setItem('cards', JSON.stringify(cards))
+}
+
+export function addRecordToCard(cardId: string, record: CardRecord) {
+  const card = getCardById(cardId)
+  card.records.push(record)
+ 	updateCard(cardId, card)
+}
+
+export function deleteRecordFromCard(cardId: string, age: number) {
+  const card = getCardById(cardId)
+  const index = card.records.findIndex((e: CardRecord)=>e.age === age)
+  card.records.splice(index, 1) 
+ 	updateCard(cardId, card)
+  console.log(card)
+}
+
+
+export function calculateBMI(a: number, b: number) {
+return Math.round(a/((b/100)*(b/100)))
 }
