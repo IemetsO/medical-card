@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/uikit/button";
 import { Input } from "@/components/uikit/input";
+import { Chart } from "@/components/chart";
 import {
   getCardById,
   deleteCard,
@@ -12,33 +13,33 @@ import {
   calculateBMI,
   deleteRecordFromCard,
 } from "@/domains/cards/services";
-import toast, { Toaster } from "react-hot-toast";
-import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from "recharts";
+import toast from "react-hot-toast";
+
 import { useFormik } from "formik";
-import { number } from "yup";
 import * as Yup from "yup";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function CardItem() {
   const { id } = useParams();
   const router = useRouter();
-
   const card = getCardById(id);
+  // useEffect(() => {
+  //   if (!card) {
+  //     toast.error("Карточка не знайдена");
+
+  //     return null;
+  //   }
+  //   console.log("fff");
+  //   return card;
+  // }, [card]);
 
   const [dataForChart, setDataForChart] = useState([]);
 
   const formik = useFormik({
     initialValues: {
-      age: number,
-      weight: number,
-      height: number,
+      age: 0,
+      weight: 0,
+      height: 0,
     },
 
     validationSchema: Yup.object({
@@ -47,31 +48,20 @@ export default function CardItem() {
       height: Yup.number().required("Обов'язкове поле"),
     }),
     onSubmit: (values) => {
-      const record = {
-        age: values.age,
-        weight: values.weight,
-        height: values.height,
-      };
-      if (card.records.find((e) => e.age === record.age)) {
+      if (card.records.find((e) => e.age === values.age)) {
         toast.error("Показники данного віку внесені");
         return null;
       }
 
-      addRecordToCard(id, record);
+      addRecordToCard(id, values);
     },
   });
 
   function handleDelete(id) {
-    notify();
+    toast.success("Карточку видалено!");
     deleteCard(id);
     router.push("/cards");
   }
-
-  if (!card) {
-    toast.error("Карточка не знайдена");
-    return null;
-  }
-  const notify = () => toast("Карточку видалено!");
 
   function createChart() {
     const updateCard = getCardById(id);
@@ -91,27 +81,18 @@ export default function CardItem() {
       <form className="flex-row mt-10" onSubmit={formik.handleSubmit}>
         <Input
           type="number"
-          name="age"
-          value={formik.values.age}
           placeholder="Введіть вік в місяцях"
-          onChange={formik.handleChange}
+          {...formik.getFieldProps("age")}
         />
-        {/* {formik.touched.age && formik.errors.age ? (
-          <div className="text-red-500 text-xs">{formik.errors.age}</div>
-        ) : null} */}
         <Input
           type="number"
-          name="weight"
-          value={formik.values.weight}
           placeholder="Введіть вагу в кг"
-          onChange={formik.handleChange}
+          {...formik.getFieldProps("weight")}
         />
         <Input
           type="number"
-          name="height"
-          value={formik.values.height}
-          placeholder="Введіть зріст в см"
-          onChange={formik.handleChange}
+          placeholder="Введіть ріст в см"
+          {...formik.getFieldProps("height")}
         />
         <div>
           <Button type="submit" className="mb-6 mt-5">
@@ -119,48 +100,38 @@ export default function CardItem() {
           </Button>{" "}
         </div>
         <div>
-          {card.records.map((e) => (
-            <div key={e.age} className="flex flex-row text-center">
-              <p className="mr-5"> {e.age} міс </p>
-              <p className="mr-5"> {e.weight} кг</p>
-              <p className="mr-5"> {e.height} см</p>
+          {card.records.map((item) => (
+            <div key={item.age} className="flex flex-row text-center">
+              <p className="mr-5"> {item.age} міс </p>
+              <p className="mr-5"> {item.weight} кг</p>
+              <p className="mr-5"> {item.height} см</p>
               <p className="mr-5">
                 {" "}
-                IMT {calculateBMI(e.weight, e.height)}кг/м2
+                IMT {calculateBMI(item.weight, item.height)}кг/м2
               </p>
               <Button
                 className="w-5 h-5 "
                 onClick={() => {
-                  deleteRecordFromCard(id, e.age);
+                  deleteRecordFromCard(id, item.age);
                 }}
-              ></Button>
+              >
+                х
+              </Button>
             </div>
           ))}
         </div>
       </form>
       <Button type="submit" className="mb-6 mt-5" onClick={createChart}>
         Побудувати графік
-      </Button>{" "}
+      </Button>
       <h3 className="mt-5 text-grey ">Графік вік/вага</h3>
-      <LineChart
-        width={400}
-        height={200}
-        data={dataForChart}
-        margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-      >
-        <Line type="monotone" dataKey="weight" stroke="#8884d8" />
-        <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="age" />
-        <YAxis />
-        <Tooltip />
-      </LineChart>
+      <Chart data={dataForChart} />
       <Link href="/">
         <Button className="mt-6">назад до головної сторінки</Button>
       </Link>
       <Button className="mt-6" onClick={handleDelete}>
         Видалити картку
       </Button>
-      <Toaster />
     </div>
   );
 }

@@ -82,7 +82,7 @@ export function deleteRecordFromCard(cardId: string, age: number) {
   const index = card.records.findIndex((e: CardRecord)=>e.age === age)
   card.records.splice(index, 1) 
  	updateCard(cardId, card)
-  console.log(card)
+
 }
 
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Card } from "../../domains/cards/types";
 import { Button } from "@/components/uikit/button";
 import { deleteCard, getCards } from "@/domains/cards/services";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 export default function Cards(card: Card) {
   const [cards, setCards] = useState([]);
@@ -18,9 +18,8 @@ export default function Cards(card: Card) {
     deleteCard(id);
     const allCardsData = getCards();
     setCards(allCardsData);
-    notify();
+    toast.success("Карточку видалено!");
   }
-  const notify = () => toast("Карточку видалено!");
 
   let sectionNode;
 
@@ -55,7 +54,6 @@ export default function Cards(card: Card) {
               >
                 x
               </button>
-              <Toaster />
             </div>
           ))}
         </div>
