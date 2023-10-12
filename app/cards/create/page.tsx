@@ -6,6 +6,7 @@ import { Button } from "@/components/uikit/button";
 import { Input } from "@/components/uikit/input";
 import { createCard } from "@/domains/cards/services";
 import { useFormik } from "formik";
+import toast from "react-hot-toast";
 import * as Yup from "yup";
 
 export default function Cards(card: Card) {
@@ -35,6 +36,7 @@ export default function Cards(card: Card) {
       router.push(`/cards/${newCard.id}`);
     },
   });
+  const showSuccessAlert = () => toast.success("Карточку створено!");
 
   return (
     <div className="mt-10 text-center">
@@ -67,7 +69,7 @@ export default function Cards(card: Card) {
           ) : null}
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10 ">
           <select
             name="gender"
             value={formik.values.gender}
@@ -84,7 +86,11 @@ export default function Cards(card: Card) {
           ) : null}
         </div>
         <div>
-          <Button type="submit" className="mb-6 mt-5">
+          <Button
+            type="submit"
+            onClick={showSuccessAlert}
+            className="mb-6 mt-5"
+          >
             Створити карточку
           </Button>
         </div>
