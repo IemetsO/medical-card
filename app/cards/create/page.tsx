@@ -1,16 +1,16 @@
-"use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Card } from "./../../../domains/cards/types";
-import { Button } from "@/components/uikit/button";
-import { Input } from "@/components/uikit/input";
-import { createCard } from "@/domains/cards/services";
-import { useFormik } from "formik";
-import toast from "react-hot-toast";
-import * as Yup from "yup";
+"use client"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { Card } from "./../../../domains/cards/types"
+import { Button } from "@/components/uikit/button"
+import { Input } from "@/components/uikit/input"
+import { createCard } from "@/domains/cards/services"
+import { useFormik } from "formik"
+import toast from "react-hot-toast"
+import * as Yup from "yup"
 
 export default function Cards(card: Card) {
-  const router = useRouter();
+  const router = useRouter()
 
   const formik = useFormik({
     initialValues: {
@@ -30,13 +30,13 @@ export default function Cards(card: Card) {
       const newCard = createCard(
         values.name.toUpperCase(),
         values.dateOfBirth,
-        values.gender
-      );
+        values.gender,
+      )
 
-      router.push(`/cards/${newCard.id}`);
+      router.push(`/cards/${newCard.id}`)
     },
-  });
-  const showSuccessAlert = () => toast.success("Карточку створено!");
+  })
+  const showSuccessAlert = () => toast.success("Карточку створено!")
 
   return (
     <div className="mt-10 text-center">
@@ -104,5 +104,5 @@ export default function Cards(card: Card) {
         <Button>назад до головної сторінки</Button>
       </Link>
     </div>
-  );
+  )
 }

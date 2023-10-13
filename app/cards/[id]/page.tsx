@@ -1,10 +1,10 @@
-"use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
-import { Button } from "@/components/uikit/button";
-import { Input } from "@/components/uikit/input";
-import { Chart } from "@/components/chart";
+"use client"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
+import { Button } from "@/components/uikit/button"
+import { Input } from "@/components/uikit/input"
+import { Chart } from "@/components/chart"
 import {
   getCardById,
   deleteCard,
@@ -12,17 +12,17 @@ import {
   addRecordToCard,
   calculateBMI,
   deleteRecordFromCard,
-} from "@/domains/cards/services";
-import toast from "react-hot-toast";
+} from "@/domains/cards/services"
+import toast from "react-hot-toast"
 
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useState, useEffect } from "react";
+import { useFormik } from "formik"
+import * as Yup from "yup"
+import { useState, useEffect } from "react"
 
 export default function CardItem() {
-  const { id } = useParams();
-  const router = useRouter();
-  const card = getCardById(id);
+  const { id } = useParams()
+  const router = useRouter()
+  const card = getCardById(id)
   // useEffect(() => {
   //   if (!card) {
   //     toast.error("Карточка не знайдена");
@@ -33,7 +33,7 @@ export default function CardItem() {
   //   return card;
   // }, [card]);
 
-  const [dataForChart, setDataForChart] = useState([]);
+  const [dataForChart, setDataForChart] = useState([])
 
   const formik = useFormik({
     initialValues: {
@@ -49,23 +49,23 @@ export default function CardItem() {
     }),
     onSubmit: (values) => {
       if (card.records.find((e) => e.age === values.age)) {
-        toast.error("Показники данного віку внесені");
-        return null;
+        toast.error("Показники данного віку внесені")
+        return null
       }
 
-      addRecordToCard(id, values);
+      addRecordToCard(id, values)
     },
-  });
+  })
 
   function handleDelete(id) {
-    toast.success("Карточку видалено!");
-    deleteCard(id);
-    router.push("/cards");
+    toast.success("Карточку видалено!")
+    deleteCard(id)
+    router.push("/cards")
   }
 
   function createChart() {
-    const updateCard = getCardById(id);
-    setDataForChart(updateCard.records);
+    const updateCard = getCardById(id)
+    setDataForChart(updateCard.records)
   }
 
   return (
@@ -112,7 +112,7 @@ export default function CardItem() {
               <Button
                 className="w-5 h-5 "
                 onClick={() => {
-                  deleteRecordFromCard(id, item.age);
+                  deleteRecordFromCard(id, item.age)
                 }}
               >
                 х
@@ -133,5 +133,5 @@ export default function CardItem() {
         Видалити картку
       </Button>
     </div>
-  );
+  )
 }
