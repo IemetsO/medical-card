@@ -19,19 +19,13 @@ export default function About() {
           src={image1}
           alt="Picture of the children"
           width={250}
-          height={250}
 
           // blurDataURL="data:..." automatically provided
           // placeholder="blur" // Optional blur-up while loading
         />
       </div>
       <div className="flex flex-row">
-        <Image
-          src={image2}
-          alt="Picture of the children"
-          width={250}
-          height={250}
-        />
+        <Image src={image2} alt="Picture of the children" width={250} />
         <ListItem>Найпоширеніші хвороби дітей. Інформація для батьків</ListItem>
       </div>
       <div className="flex flex-row">
@@ -39,12 +33,7 @@ export default function About() {
           Особистий кабінет із можливістю вносити показники ваги, зросту дитини
           та отримані щеплення
         </ListItem>
-        <Image
-          src={image3}
-          alt="Picture of the children"
-          width={250}
-          height={250}
-        />
+        <Image src={image3} alt="Picture of the children" width={250} />
       </div>
 
       <div className="mt-10 text-center">

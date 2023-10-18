@@ -33,7 +33,7 @@ export default function Cards(card: Card) {
           <table className="border border-slate-400 min-w-full mt-5">
             <thead>
               <tr>
-                <th className="border border-slate-400">ім'я</th>
+                <th className="border border-slate-400">ім`я</th>
                 <th className="border border-slate-400">дата народження</th>
                 <th className="border border-slate-400">стать</th>
                 <th className="border border-slate-400"></th>
