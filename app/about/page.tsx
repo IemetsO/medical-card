@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import ListItem from "@/components/list-item"
+import AboutItem from "@/components/about-item"
 import image1 from "@/images/image1.jpg"
 import image2 from "@/images/image2.jpg"
 import image3 from "@/images/image3.jpg"
@@ -14,7 +14,7 @@ export default function About() {
         </h1>
       </div>
       <div className="flex flex-row">
-        <ListItem>Розвиток здорової дитини. Поради для батьків</ListItem>
+        <AboutItem>Розвиток здорової дитини. Поради для батьків</AboutItem>
         <Image
           src={image1}
           alt="Picture of the children"
@@ -26,13 +26,15 @@ export default function About() {
       </div>
       <div className="flex flex-row">
         <Image src={image2} alt="Picture of the children" width={250} />
-        <ListItem>Найпоширеніші хвороби дітей. Інформація для батьків</ListItem>
+        <AboutItem>
+          Найпоширеніші хвороби дітей. Інформація для батьків
+        </AboutItem>
       </div>
       <div className="flex flex-row">
-        <ListItem>
+        <AboutItem>
           Особистий кабінет із можливістю вносити показники ваги, зросту дитини
           та отримані щеплення
-        </ListItem>
+        </AboutItem>
         <Image src={image3} alt="Picture of the children" width={250} />
       </div>
 

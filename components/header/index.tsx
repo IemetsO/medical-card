@@ -2,23 +2,22 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
+import { cn } from "@/utils"
+import { HEADER_LINKS } from "./constant"
 
 export const Header = () => {
   const pathname = usePathname()
   return (
-    <header className="bg-sky-400 text-white font-bold h-10 pl-5 items-baseline">
-      <Link
-        className={`link ${pathname === "/about" ? "underline" : ""}`}
-        href="/about"
-      >
-        Про нас
-      </Link>
-      <Link
-        className={`link ${pathname === "/cards" ? "underline" : ""} ml-5`}
-        href="/cards"
-      >
-        Ваші картки
-      </Link>
+    <header className="bg-sky-400 text-white font-bold p-6 flex items-center gap-5 ">
+      {HEADER_LINKS.map((link) => (
+        <Link
+          key={link.text}
+          className={cn("link", pathname === link.href && "underline")}
+          href={link.href}
+        >
+          {link.text}
+        </Link>
+      ))}
     </header>
   )
 }
