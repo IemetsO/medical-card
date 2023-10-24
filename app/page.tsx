@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { Button } from "@/components/uikit/button";
+import Link from "next/link"
+import { Button } from "@/components/uikit/button"
 
 export default function Home() {
   return (
@@ -20,5 +20,5 @@ export default function Home() {
         </Link>
       </div>
     </div>
-  );
+  )
 }

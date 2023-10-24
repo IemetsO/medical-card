@@ -1,16 +1,15 @@
-"use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Card } from "./../../../domains/cards/types";
-import { Button } from "@/components/uikit/button";
-import { Input } from "@/components/uikit/input";
-import { createCard } from "@/domains/cards/services";
-import { useFormik } from "formik";
-import toast from "react-hot-toast";
-import * as Yup from "yup";
+"use client"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/uikit/button"
+import { Input } from "@/components/uikit/input"
+import { Select } from "@/components/uikit/select"
+import { createCard } from "@/domains/cards/services"
+import { useFormik } from "formik"
+import toast from "react-hot-toast"
+import * as Yup from "yup"
 
-export default function Cards(card: Card) {
-  const router = useRouter();
+export default function Cards() {
+  const router = useRouter()
 
   const formik = useFormik({
     initialValues: {
@@ -30,24 +29,24 @@ export default function Cards(card: Card) {
       const newCard = createCard(
         values.name.toUpperCase(),
         values.dateOfBirth,
-        values.gender
-      );
+        values.gender,
+      )
 
-      router.push(`/cards/${newCard.id}`);
+      router.push(`/cards/${newCard.id}`)
     },
-  });
-  const showSuccessAlert = () => toast.success("Карточку створено!");
+  })
+  const showSuccessAlert = () => toast.success("Карточку створено!")
 
   return (
     <div className="mt-10 text-center">
       <h2 className="text-grey font-bold">Внесіть дані Вашої дитини</h2>
 
-      <form className="flex-col mt-10" onSubmit={formik.handleSubmit}>
+      <form className="flex-col mt-5" onSubmit={formik.handleSubmit}>
+        <p className="">Введіть ім`я</p>
         <Input
           type="text"
           name="name"
           value={formik.values.name}
-          placeholder="Введіть ім'я"
           onChange={formik.handleChange}
         />
         {formik.touched.name && formik.errors.name ? (
@@ -70,7 +69,7 @@ export default function Cards(card: Card) {
         </div>
 
         <div className="mt-10 ">
-          <select
+          <Select
             name="gender"
             value={formik.values.gender}
             onChange={formik.handleChange}
@@ -80,7 +79,7 @@ export default function Cards(card: Card) {
             </option>
             <option value="дівчинка">дівчинка</option>
             <option value="хлопчик">хлопчик</option>
-          </select>
+          </Select>
           {formik.touched.gender && formik.errors.gender ? (
             <div className="text-red-500 text-xs">{formik.errors.gender}</div>
           ) : null}
@@ -95,14 +94,6 @@ export default function Cards(card: Card) {
           </Button>
         </div>
       </form>
-      <div className="mb-6">
-        <Link href="/cards">
-          <Button>Перейти до карток</Button>
-        </Link>
-      </div>
-      <Link href="/">
-        <Button>назад до головної сторінки</Button>
-      </Link>
     </div>
-  );
+  )
 }
