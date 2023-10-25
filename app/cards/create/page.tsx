@@ -41,9 +41,9 @@ export default function Cards() {
     <div className="mt-10 text-center">
       <h2 className="text-grey font-bold">Внесіть дані Вашої дитини</h2>
 
-      <form className="flex-col mt-5" onSubmit={formik.handleSubmit}>
-        <p className="">Введіть ім`я</p>
+      <form className="flex-col mt-5  " onSubmit={formik.handleSubmit}>
         <Input
+          label="Ім'я"
           type="text"
           name="name"
           value={formik.values.name}
@@ -52,13 +52,12 @@ export default function Cards() {
         {formik.touched.name && formik.errors.name ? (
           <div className="text-red-500 text-xs">{formik.errors.name}</div>
         ) : null}
-        <div className="mt-10 text-grey-25 ">
-          <p className="">Введіть дату народження</p>
+        <div className="mt-10  ">
           <Input
+            label="Дата народження"
             type="Date"
             name="dateOfBirth"
             value={formik.values.dateOfBirth}
-            className="text-xs"
             onChange={formik.handleChange}
           />
           {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (

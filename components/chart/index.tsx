@@ -1,6 +1,10 @@
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
 
-export const Chart = ({ data }) => {
+type Props = {
+  data: unknown[]
+}
+
+export const Chart = ({ data }: Props) => {
   return (
     <LineChart
       width={400}

@@ -1,6 +1,6 @@
 export const HEADER_LINKS = [
     {
-      href: '/about',
+      href: '/',
       text: "Про нас"
     },
     {

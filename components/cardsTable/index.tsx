@@ -1,12 +1,14 @@
 import Link from "next/link"
 import { Card } from "../../domains/cards/types"
 
-export const CardsTable = ({ cards, handleDelete }) => {
+export const CardsTable = (
+  { cards, handleDelete } = { cards: [], handleDelete: (id: string) => {} },
+) => {
   return (
     <table className="border border-slate-400 min-w-full mt-5">
       <thead>
         <tr>
-          <th className="border border-slate-400">ім`я</th>
+          <th className="border border-slate-400">ім&#39;я</th>
           <th className="border border-slate-400">дата народження</th>
           <th className="border border-slate-400">стать</th>
           <th className="border border-slate-400"></th>
@@ -31,7 +33,7 @@ export const CardsTable = ({ cards, handleDelete }) => {
                 className="place-items-end min-w-max h-50 rounded-md text-sky-500 rounded-md border-grey"
                 onClick={() => handleDelete(card.id)}
               >
-                x
+                🗑
               </button>
             </td>
           </tr>
