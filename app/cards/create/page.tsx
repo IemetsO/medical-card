@@ -36,29 +36,21 @@ export default function Cards() {
     },
   })
   const showSuccessAlert = () => toast.success("Карточку створено!")
-
+  const { getFieldProps } = formik
   return (
     <div className="mt-10 text-center">
       <h2 className="text-grey font-bold">Внесіть дані Вашої дитини</h2>
 
       <form className="flex-col mt-5  " onSubmit={formik.handleSubmit}>
-        <Input
-          label="Ім'я"
-          type="text"
-          name="name"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-        />
+        <Input {...getFieldProps("name")} label="Ім'я" type="text" />
         {formik.touched.name && formik.errors.name ? (
           <div className="text-red-500 text-xs">{formik.errors.name}</div>
         ) : null}
         <div className="mt-10  ">
           <Input
+            {...getFieldProps("dateOfBirth")}
             label="Дата народження"
             type="Date"
-            name="dateOfBirth"
-            value={formik.values.dateOfBirth}
-            onChange={formik.handleChange}
           />
           {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
             <div className="text-red-500 text-xs">
@@ -68,11 +60,7 @@ export default function Cards() {
         </div>
 
         <div className="mt-10 ">
-          <Select
-            name="gender"
-            value={formik.values.gender}
-            onChange={formik.handleChange}
-          >
+          <Select {...getFieldProps("gender")}>
             <option value="" selected disabled>
               Оберіть стать
             </option>

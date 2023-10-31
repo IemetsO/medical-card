@@ -3,7 +3,7 @@ import { Card } from "./types"
 import { CardRecord } from "./types"
 
 export function createCard(name: string, dateOfBirth: string, gender: string) {
-  const newCard = {
+  const newCard: Card = {
     id: nanoid(),
     name: name,
     dateOfBirth: dateOfBirth,
@@ -23,18 +23,18 @@ export function deleteCard(id: string) {
   localStorage.setItem("cards", JSON.stringify(cards))
 }
 
-export function getCardById(id: string) {
+export function getCardById(id: string): Card | undefined  {
   const cards = getCards()
   return cards.find((e: Card) => e.id === id)
 }
 
-export function getCards() {
+export function getCards(): Card[]{
   const cardsString = localStorage.getItem("cards")
   if (!cardsString) {
     return []
   }
 
-  return JSON.parse(localStorage.getItem("cards"))
+  return JSON.parse(cardsString)
 }
 
 export function saveCard(newCard: Card) {
@@ -70,12 +70,19 @@ export function updateCard(id: string, updatedCard: Card) {
 
 export function addRecordToCard(cardId: string, record: CardRecord) {
   const card = getCardById(cardId)
+  if (!card) {
+    return
+  }
   card.records.push(record)
+  card.records.sort((r1, r2) => (r1.age < r2.age) ?-1 : (r1.age > r2.age) ? 1 : 0);
   updateCard(cardId, card)
 }
 
 export function deleteRecordFromCard(cardId: string, age: number) {
   const card = getCardById(cardId)
+  if (!card) {
+    return
+  }
   const index = card.records.findIndex((e: CardRecord) => e.age === age)
   card.records.splice(index, 1)
   updateCard(cardId, card)
