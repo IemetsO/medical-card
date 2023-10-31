@@ -1,6 +1,11 @@
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
+import { CardRecord } from "@/domains/cards/types"
 
-export const Chart = ({ data }) => {
+type Props = {
+  data: CardRecord[]
+}
+
+export const Chart = ({ data }: Props) => {
   return (
     <LineChart
       width={400}
