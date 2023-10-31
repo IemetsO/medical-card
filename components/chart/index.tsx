@@ -1,7 +1,8 @@
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
+import { CardRecord } from "@/domains/cards/types"
 
 type Props = {
-  data: unknown[]
+  data: CardRecord[]
 }
 
 export const Chart = ({ data }: Props) => {

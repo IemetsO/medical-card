@@ -1,9 +1,7 @@
 "use client"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useParams } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import { Button } from "@/components/uikit/button"
-
 import { Chart } from "@/components/chart"
 import { Form } from "@/components/form"
 import { IndicatorsTable } from "@/components/indicatorsTable"
@@ -47,19 +45,17 @@ export default function CardItem() {
   }
 
   return (
-    <div className="max-w-md m-auto bg-gray-50 mt-5 rounded-md border-slate-400 text-center ">
+    <div className="max-w-md m-auto bg-gray-50 p-8 rounded-md border-slate-400 text-center ">
       <div className="flex flex-row place-content-between items-baseline">
-        <div className="flex flex-row items-baseline">
+        <div className="flex flex-row items-baseline gap-2">
           <Link href="/cards">
             <Button className="mt-2 px-3">←</Button>
           </Link>
-          <p className="text-xs ml-2">назад до карток</p>
+          <p className="text-xs ">назад до карток</p>
         </div>
         <div className="flex flex-row items-baseline">
           <p className="text-xs mr-2">видалити картку</p>
-          <Button className="mt-2" onClick={handleDelete}>
-            🗑
-          </Button>
+          <Button onClick={handleDelete}>🗑</Button>
         </div>
       </div>
 
@@ -71,8 +67,8 @@ export default function CardItem() {
       <h2 className="mt-10 text-grey ">
         Вкажіть вагу та зріст Вашої дитини по місяцям для побудови графіку
       </h2>
-      <Form id={id} card={card}></Form>
-      <IndicatorsTable id={id} card={card}></IndicatorsTable>
+      <Form id={id} card={card} />
+      <IndicatorsTable id={id} card={card} />
       <Button type="submit" className="mb-6 mt-5" onClick={createChart}>
         Побудувати графік
       </Button>

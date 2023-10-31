@@ -1,23 +1,26 @@
 import Link from "next/link"
 import { Card } from "../../domains/cards/types"
+import { Table } from "@/components/table"
 
-export const CardsTable = (
-  { cards, handleDelete } = { cards: [], handleDelete: (id: string) => {} },
-) => {
+type Props = {
+  cards: Card[]
+  handleDelete: (id: string) => void
+}
+export const CardsTable = ({ cards, handleDelete }: Props) => {
   return (
-    <table className="border border-slate-400 min-w-full mt-5">
+    <Table className=" min-w-full mt-5">
       <thead>
         <tr>
-          <th className="border border-slate-400">ім&#39;я</th>
-          <th className="border border-slate-400">дата народження</th>
-          <th className="border border-slate-400">стать</th>
-          <th className="border border-slate-400"></th>
+          <th>ім&#39;я</th>
+          <th>дата народження</th>
+          <th>стать</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {cards.map((card: Card) => (
           <tr key={card?.id}>
-            <td className="border border-slate-400">
+            <td>
               <Link
                 href={`cards/${card.id}`}
                 className="text-sky-500 font-bold"
@@ -25,12 +28,12 @@ export const CardsTable = (
                 {card?.name}
               </Link>
             </td>
-            <td className="border border-slate-400">{card?.dateOfBirth}</td>
-            <td className="border border-slate-400"> {card?.gender}</td>
-            <td className="border border-slate-400">
+            <td>{card?.dateOfBirth}</td>
+            <td> {card?.gender}</td>
+            <td>
               <button
                 type="button"
-                className="place-items-end min-w-max h-50 rounded-md text-sky-500 rounded-md border-grey"
+                className="   text-sky-500 "
                 onClick={() => handleDelete(card.id)}
               >
                 🗑
@@ -39,6 +42,6 @@ export const CardsTable = (
           </tr>
         ))}
       </tbody>
-    </table>
+    </Table>
   )
 }

@@ -2,10 +2,15 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
-import { addRecordToCard } from "@/domains/cards/services"
-import toast from "react-hot-toast"
 
-export const Form = ({ id, card } = { id: String }) => {
+import toast from "react-hot-toast"
+import { Card } from "@/domains/cards/types"
+type Props = {
+  id: string
+  card: Card
+}
+
+export const Form = ({ id, card }: Props) => {
   const formik = useFormik({
     initialValues: {
       age: 0,
@@ -19,41 +24,41 @@ export const Form = ({ id, card } = { id: String }) => {
       height: Yup.number().required("Обов'язкове поле"),
     }),
     onSubmit: (values) => {
-      if (card?.records.find((e) => e.age === values.age)) {
+      if (card?.records.find((recordItem) => recordItem.age === values.age)) {
         toast.error("Показники данного віку внесені")
-      }
-      if (typeof id === "string") {
-        addRecordToCard(id, values)
       }
     },
   })
+  const { getFieldProps } = formik
   return (
-    <form className="flex-row mt-10 " onSubmit={formik.handleSubmit}>
+    <form className="mt-10 " onSubmit={formik.handleSubmit}>
       <Input
+        {...getFieldProps("age")}
         className="text-xs "
         label="Введіть вік в місяцях"
         type="number"
-        {...formik.getFieldProps("age")}
+        placeholder="1"
       />
 
       <Input
+        {...getFieldProps("weight")}
         className="text-xs"
         label="Введіть вагу в кг"
         type="number"
-        {...formik.getFieldProps("weight")}
+        pattern="2"
       />
 
       <Input
+        {...getFieldProps("height")}
         className="text-xs  "
         label="Введіть ріст в см"
         type="number"
-        {...formik.getFieldProps("height")}
+        placeholder="40"
       />
-      <div>
-        <Button type="submit" className="mb-6 mt-5">
-          Внести показники
-        </Button>
-      </div>
+
+      <Button type="submit" className="mb-6 mt-5">
+        Внести показники
+      </Button>
     </form>
   )
 }
