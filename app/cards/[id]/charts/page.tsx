@@ -3,7 +3,12 @@ import { Chart } from "@/components/chart"
 import { useParams } from "next/navigation"
 import { getCardById } from "@/domains/cards/services"
 import { CardRecord } from "@/domains/cards/types"
-import { DEFAULT_HEIGHTforAGE } from "./constant"
+import {
+  HeightAndWeightForAgePlus3,
+  HeightAndWeightForAgeMinus2,
+  WeightForHeightMinus2,
+  WeightForHeightPlus2,
+} from "./constant"
 
 export default function ChartItem() {
   const { id: idParam } = useParams()
@@ -12,43 +17,40 @@ export default function ChartItem() {
   if (!card) {
     return
   }
-  const data: CardRecord[] = card.records
+  const chartData: CardRecord[] = card.records
+
+  const heightForAgeData = {
+    datas: [chartData, HeightAndWeightForAgePlus3, HeightAndWeightForAgeMinus2],
+    xKey: "height",
+    yKey: "age",
+  }
+
+  const weightForAgeData = {
+    datas: [chartData, HeightAndWeightForAgePlus3, HeightAndWeightForAgeMinus2],
+    xKey: "weight",
+    yKey: "age",
+  }
+
+  const weightForHeight = {
+    datas: [chartData, WeightForHeightMinus2, WeightForHeightPlus2],
+    xKey: "weight",
+    yKey: "height",
+  }
 
   return (
     <div className="max-w-md m-auto text-center ">
       <h2 className="text-sky-500 font-bold">
         Графік зріст/довжина тіла (см) до віку (м) дитини {card.name}
       </h2>
-      <Chart
-        data={data}
-        dataKey1="height"
-        dataKey2="age"
-        defaultData={DEFAULT_HEIGHTforAGE}
-        defaultDataKey1="height_upper"
-        defaultDataKey2="height_lower"
-      ></Chart>
+      <Chart data={heightForAgeData} />
       <h2 className="text-sky-500 font-bold">
         Графік вага (кг) до віку (м) дитини {card.name}
       </h2>
-      <Chart
-        data={data}
-        dataKey1="weight"
-        dataKey2="age"
-        defaultData={DEFAULT_HEIGHTforAGE}
-        defaultDataKey1="height_upper"
-        defaultDataKey2="height_lower"
-      ></Chart>
+      <Chart data={weightForAgeData} />
       <h2 className="text-sky-500 font-bold">
         Графік вага (кг) до зросту (см) дитини {card.name}
       </h2>
-      <Chart
-        data={data}
-        dataKey1="weight"
-        dataKey2="height"
-        defaultData={DEFAULT_HEIGHTforAGE}
-        defaultDataKey1="height_upper"
-        defaultDataKey2="height_lower"
-      ></Chart>
+      <Chart data={weightForHeight} />
     </div>
   )
 }

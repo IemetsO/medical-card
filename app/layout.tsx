@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { Toaster } from "react-hot-toast"
 import { Header } from "@/components/header"
+import { AuthProvider } from "./../contexts/auth/provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,13 +19,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Header />
-        <div className="px-10">
-          {children}
+      <html lang="en">
+        <body className={inter.className}>
+          <AuthProvider>
+            <Header />
+            <div className="px-10">{children}</div>
+          </AuthProvider>
           <Toaster />
-        </div>
-      </body>
+        </body>
+      </html>
     </html>
   )
 }

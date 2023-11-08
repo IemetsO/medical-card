@@ -6,5 +6,6 @@ export const HEADER_LINKS = [
     {
         href: "/cards",
         text: "Ваші картки"
-    }
+    },
+    
   ]

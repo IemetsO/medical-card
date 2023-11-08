@@ -28,7 +28,7 @@ export default function CardItem() {
     router.push("/cards")
   }
 
-  function createChart() {
+  function goToChart() {
     router.push(`/cards/${id}/charts`)
   }
   if (!card) {
@@ -60,7 +60,7 @@ export default function CardItem() {
       </h2>
       <Form id={id} card={card} />
       <IndicatorsTable id={id} card={card} />
-      <Button type="submit" className="mb-6 mt-5" onClick={createChart}>
+      <Button type="submit" className="mb-6 mt-5" onClick={goToChart}>
         Побудувати графік
       </Button>
     </div>
