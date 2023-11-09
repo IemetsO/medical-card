@@ -2,6 +2,7 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
+import { addRecordToCard } from "@/domains/cards/services"
 
 import toast from "react-hot-toast"
 import { Card } from "@/domains/cards/types"
@@ -27,6 +28,7 @@ export const Form = ({ id, card }: Props) => {
       if (card?.records.find((recordItem) => recordItem.age === values.age)) {
         toast.error("Показники данного віку внесені")
       }
+      addRecordToCard(id, values)
     },
   })
   const { getFieldProps } = formik

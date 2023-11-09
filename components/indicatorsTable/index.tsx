@@ -10,7 +10,7 @@ type Props = {
 
 export const IndicatorsTable = ({ id, card }: Props) => {
   return (
-    <div>
+    <div className="text-xs">
       <Table className=" min-w-full mt-5">
         <thead>
           <tr>
@@ -30,7 +30,6 @@ export const IndicatorsTable = ({ id, card }: Props) => {
               <td>{calculateBMI(item.weight, item.height)}кг/м2</td>
               <td>
                 <Button
-                  className="   text-sky-500 "
                   onClick={() => {
                     deleteRecordFromCard(id, item.age)
                   }}

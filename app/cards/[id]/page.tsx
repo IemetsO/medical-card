@@ -2,14 +2,11 @@
 import Link from "next/link"
 import { useRouter, useParams } from "next/navigation"
 import { Button } from "@/components/uikit/button"
-import { Chart } from "@/components/chart"
 import { Form } from "@/components/form"
 import { IndicatorsTable } from "@/components/indicatorsTable"
 import { getCardById, deleteCard, calculateAge } from "@/domains/cards/services"
 import toast from "react-hot-toast"
-import { CardRecord } from "@/domains/cards/types"
-
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 
 export default function CardItem() {
   const { id: idParam } = useParams()
@@ -25,8 +22,6 @@ export default function CardItem() {
     }
   }, [card, router])
 
-  const [dataForChart, setDataForChart] = useState<CardRecord[]>([])
-
   function handleDelete() {
     toast.success("Карточку видалено!")
     deleteCard(id)
@@ -34,11 +29,7 @@ export default function CardItem() {
   }
 
   function createChart() {
-    const updateCard = getCardById(id)
-    if (!updateCard) {
-      return
-    }
-    setDataForChart(updateCard.records)
+    router.push(`/cards/${id}/charts`)
   }
   if (!card) {
     return null
@@ -72,8 +63,6 @@ export default function CardItem() {
       <Button type="submit" className="mb-6 mt-5" onClick={createChart}>
         Побудувати графік
       </Button>
-      <h3 className="mt-5 text-grey ">Графік вік/вага</h3>
-      <Chart data={dataForChart} />
     </div>
   )
 }
