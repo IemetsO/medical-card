@@ -74,7 +74,7 @@ export function addRecordToCard(cardId: string, record: CardRecord) {
     return
   }
   card.records.push(record)
-  card.records.sort((r1, r2) => (r1.age < r2.age) ?-1 : (r1.age > r2.age) ? 1 : 0);
+  card.records.sort((r1, r2) => r1.age - r2.age);
   updateCard(cardId, card)
 }
 

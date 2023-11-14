@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { cn } from "@/utils"
-import { HEADER_LINKS } from "./constant"
+import { HEADER_LINKS, LOGIN_REGISTRATION } from "./constant"
 
 export const Header = () => {
   const pathname = usePathname()
@@ -15,6 +15,11 @@ export const Header = () => {
           className={cn("link", pathname === link.href && "underline")}
           href={link.href}
         >
+          {link.text}
+        </Link>
+      ))}
+      {LOGIN_REGISTRATION.map((link) => (
+        <Link key={link.text} href={link.href}>
           {link.text}
         </Link>
       ))}
