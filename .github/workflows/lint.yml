@@ -1,0 +1,33 @@
+name: Run web lint
+
+concurrency:
+  group: ${{ github.ref }}-lint
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  lint:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [lts/hydrogen]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run checks
+        run: npm run lint
