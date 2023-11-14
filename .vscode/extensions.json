@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "formulahendry.auto-complete-tag",
+    "aaron-bond.better-comments",
+    "streetsidesoftware.code-spell-checker",
+    "dsznajder.es7-react-js-snippets",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "oderwat.indent-rainbow",
+    "VisualStudioExptTeam.vscodeintellicode",
+    "xabikos.JavaScriptSnippets",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss"
+  ]
+}

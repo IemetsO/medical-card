@@ -1,3 +1,12 @@
 {
-  "editor.formatOnSave": true
+  "editor.tabSize": 2,
+  "editor.rulers": [80, 120],
+  "editor.guides.bracketPairs": "active",
+  "editor.inlineSuggest.enabled": true,
+  "editor.linkedEditing": true,
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.showSlider": "always",
+  "editor.formatOnSave": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "window.commandCenter": true
 }
