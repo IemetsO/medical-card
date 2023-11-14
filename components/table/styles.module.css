@@ -1,4 +1,4 @@
 .table th,
 .table td {
-    @apply border border-slate-400;
+  @apply border border-slate-400;
 }

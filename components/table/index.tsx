@@ -1,5 +1,6 @@
-import styles from "./styles.module.css"
 import { cn } from "@/utils"
+
+import styles from "./styles.module.css"
 
 type Props = {
   children: React.ReactNode

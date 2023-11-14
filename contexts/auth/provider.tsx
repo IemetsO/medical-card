@@ -1,11 +1,12 @@
 "use client"
-import { useState, useEffect } from "react"
-import { auth } from "@/services/firebase"
 import { onAuthStateChanged } from "firebase/auth"
-import { AuthContextType, AuthContext } from "./context"
-import { getUser } from "@/domains/auth/services"
-
+import { useEffect, useState } from "react"
 import React from "react"
+
+import { getUser } from "@/domains/auth/services"
+import { auth } from "@/services/firebase"
+
+import { AuthContext, type AuthContextType } from "./context"
 
 type Props = {
   children?: React.ReactNode

@@ -1,12 +1,13 @@
 "use client"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/uikit/button"
-import { Input } from "@/components/uikit/input"
 import { useFormik } from "formik"
+import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 import * as Yup from "yup"
-import { signUp } from "@/domains/auth/services"
+
 import { ErrorMessage } from "@/components/errorMessage"
+import { Button } from "@/components/uikit/button"
+import { Input } from "@/components/uikit/input"
+import { signUp } from "@/domains/auth/services"
 
 export default function Registration() {
   const router = useRouter()

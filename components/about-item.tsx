@@ -4,7 +4,7 @@ type Props = {
 
 export default function AboutItem({ children }: Props) {
   return (
-    <p className="p-4 hover:bg-slate-100 text-slate-500 font-small  max-w-sm mx-auto bg-lightgray rounded-xl shadow-lg flex items-center space-x-4">
+    <p className="font-small bg-lightgray mx-auto flex  max-w-sm items-center space-x-4 rounded-xl p-4 text-slate-500 shadow-lg hover:bg-slate-100">
       {children}
     </p>
   )

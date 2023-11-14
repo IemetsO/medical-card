@@ -1,11 +1,12 @@
 import { useFormik } from "formik"
+import toast from "react-hot-toast"
 import * as Yup from "yup"
+
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
 import { addRecordToCard } from "@/domains/cards/services"
+import { type Card } from "@/domains/cards/types"
 
-import toast from "react-hot-toast"
-import { Card } from "@/domains/cards/types"
 type Props = {
   id: string
   card: Card

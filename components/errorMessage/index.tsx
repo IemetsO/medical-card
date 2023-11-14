@@ -1,4 +1,5 @@
 import React from "react"
+
 import { cn } from "@/utils"
 
 type Props = React.PropsWithChildren<{
@@ -9,6 +10,6 @@ export const ErrorMessage = (props: Props) => {
   const { children, className } = props
 
   return children ? (
-    <p className={cn("text-red-500 text-xs", className)}>{children}</p>
+    <p className={cn("text-xs text-red-500", className)}>{children}</p>
   ) : null
 }

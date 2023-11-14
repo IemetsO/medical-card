@@ -1,17 +1,17 @@
 "use client"
-import Link from "next/link"
-import { Chart } from "@/components/chart"
 import { useParams } from "next/navigation"
+
+import { Chart } from "@/components/chart"
+import { Button } from "@/components/uikit/button"
 import { getCardById } from "@/domains/cards/services"
-import { CardRecord } from "@/domains/cards/types"
+import { type CardRecord } from "@/domains/cards/types"
+
 import {
-  HeightAndWeightForAgePlus3,
   HeightAndWeightForAgeMinus2,
+  HeightAndWeightForAgePlus3,
   WeightForHeightMinus2,
   WeightForHeightPlus2,
 } from "./constant"
-import { Button } from "@/components/uikit/button"
-import { useRouter } from "next/router"
 
 export default function ChartsPage() {
   const { id: idParam } = useParams()
@@ -43,22 +43,22 @@ export default function ChartsPage() {
     window.history.back()
   }
   return (
-    <div className="max-w-md m-auto text-center ">
+    <div className="m-auto max-w-md text-center ">
       <div className="flex flex-row items-baseline gap-2">
         <Button className="mt-2 px-3" onClick={goBack}>
           ←
         </Button>
         <p className="text-xs ">назад до карточки</p>
       </div>
-      <h2 className="text-sky-500 font-bold">
+      <h2 className="font-bold text-sky-500">
         Графік зріст/довжина тіла (см) до віку (м) дитини {card.name}
       </h2>
       <Chart {...heightForAgeData} />
-      <h2 className="text-sky-500 font-bold">
+      <h2 className="font-bold text-sky-500">
         Графік вага (кг) до віку (м) дитини {card.name}
       </h2>
       <Chart {...weightForAgeData} />
-      <h2 className="text-sky-500 font-bold">
+      <h2 className="font-bold text-sky-500">
         Графік вага (кг) до зросту (см) дитини {card.name}
       </h2>
       <Chart {...weightForHeight} />
