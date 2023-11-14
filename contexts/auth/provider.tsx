@@ -16,7 +16,7 @@ export function AuthProvider({ children }: Props) {
     firebaseUser: undefined,
     user: undefined,
   })
-  console.log(contextValue)
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(
       auth,

@@ -1,21 +1,15 @@
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
 import { CardRecord } from "@/domains/cards/types"
 
-type Props<DataRecord extends Record<string, number>> = {
-  datas: DataRecord[][]
+type Props = {
+  datas: Record<string, number>[][]
   xKey: string
   yKey: string
 }
 
-function detectionOfColorOfLine(datas: { datas: [] }, data: []) {
-  if (datas.datas.indexOf(data) === 0) {
-    return "green"
-  } else {
-    return "red"
-  }
-}
+export const Chart = (props: Props) => {
+  const { datas, xKey, yKey } = props
 
-export const Chart = (DataRecord: Props) => {
   return (
     <LineChart
       width={500}
@@ -23,22 +17,18 @@ export const Chart = (DataRecord: Props) => {
       margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
       className="text-xs"
     >
-      {DataRecord.data.datas.map((data: []) => (
+      {datas.map((data, index) => (
         <Line
-          key={DataRecord.data.datas.indexOf(data)}
+          key={index}
           type="monotone"
           data={data}
-          dataKey={DataRecord.data.xKey}
-          stroke={detectionOfColorOfLine(DataRecord.data, data)}
+          dataKey={xKey}
+          stroke={index === 0 ? "green" : "red"}
         />
       ))}
 
       <CartesianGrid stroke="#ccc" />
-      <XAxis
-        type="number"
-        dataKey={DataRecord.data.yKey}
-        domain={["auto", "auto"]}
-      />
+      <XAxis type="number" dataKey={yKey} domain={["auto", "auto"]} />
       <YAxis />
       <Tooltip />
     </LineChart>

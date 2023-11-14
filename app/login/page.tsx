@@ -3,33 +3,12 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
 import { useFormik } from "formik"
-import toast from "react-hot-toast"
 import * as Yup from "yup"
-import { login, signUp } from "@/domains/auth/services"
+import { login } from "@/domains/auth/services"
+import { ErrorMessage } from "@/components/errorMessage"
 
 export default function Login() {
   const router = useRouter()
-
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .max(50, "Must be 50 characters or less")
-        .required("Обов'язкове поле"),
-      email: Yup.string().required("Обов'язкове поле"),
-      password: Yup.string().min(7).required("Обов'язкове поле"),
-    }),
-    onSubmit: (values) => {
-      signUp(values)
-      toast.success("Особистий кабінет створено")
-      router.push(`/cards`)
-    },
-  })
 
   const formikSignIn = useFormik({
     initialValues: {
@@ -46,63 +25,25 @@ export default function Login() {
       router.push(`/cards`)
     },
   })
-  const { getFieldProps } = formik
+
+  const { getFieldProps, errors, touched } = formikSignIn
+  const getErrorMessage = (key: keyof typeof formikSignIn.touched) =>
+    touched[key] && errors[key] ? errors[key] : null
   return (
     <div className="mt-5 text-center">
-      <form className="flex-col  " onSubmit={formik.handleSubmit}>
-        <Input {...getFieldProps("name")} label="Ім'я" type="text" />
-        {formik.touched.name && formik.errors.name ? (
-          <div className="text-red-500 text-xs">{formik.errors.name}</div>
-        ) : null}
-        <div className="mt-5  ">
-          <Input
-            {...getFieldProps("email")}
-            label="Електронна пошта"
-            type="email"
-          />
-          {formik.touched.email && formik.errors.email ? (
-            <div className="text-red-500 text-xs">{formik.errors.email}</div>
-          ) : null}
-        </div>
-        <div className="mt-5  ">
-          <Input
-            {...getFieldProps("password")}
-            label="Пароль"
-            type="password"
-          />
-          {formik.touched.password && formik.errors.password ? (
-            <div className="text-red-500 text-xs">{formik.errors.password}</div>
-          ) : null}
-        </div>
-
-        <div>
-          <Button type="submit" className="mb-6 mt-5">
-            Створити особистий кабінет
-          </Button>
-        </div>
-      </form>
-      <h4>У Вас вже є особистий кабінет? </h4>
-
-      <form className="flex-col  " onSubmit={formikSignIn.handleSubmit}>
+      <form
+        className="flex flex-col gap-5"
+        onSubmit={formikSignIn.handleSubmit}
+      >
         <Input
-          {...formikSignIn.getFieldProps("email")}
+          {...getFieldProps("email")}
           label="Електронна пошта"
           type="email"
         />
-        {formik.touched.email && formik.errors.email ? (
-          <div className="text-red-500 text-xs">{formik.errors.email}</div>
-        ) : null}
+        <ErrorMessage>{getErrorMessage("email")}</ErrorMessage>
 
-        <div className="mt-5  ">
-          <Input
-            {...formikSignIn.getFieldProps("password")}
-            label="Пароль"
-            type="password"
-          />
-          {formik.touched.password && formik.errors.password ? (
-            <div className="text-red-500 text-xs">{formik.errors.password}</div>
-          ) : null}
-        </div>
+        <Input {...getFieldProps("password")} label="Пароль" type="password" />
+        <ErrorMessage>{getErrorMessage("password")}</ErrorMessage>
 
         <div>
           <Button type="submit" className="mb-6 mt-5">

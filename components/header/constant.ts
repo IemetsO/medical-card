@@ -9,3 +9,14 @@ export const HEADER_LINKS = [
     },
     
   ]
+
+ export const LOGIN_REGISTRATION = [
+  {
+    href: 'registration',
+    text: "Реєстрація"
+  },
+  {
+      href: "login",
+      text: "Увійти"
+  },
+ ]

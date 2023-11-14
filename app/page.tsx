@@ -22,10 +22,8 @@ export default function About() {
       </div>
       <div className="flex flex-row">
         <AboutItem>
-          <Link href="login">
-            Особистий кабінет із можливістю вносити показники ваги, зросту
-            дитини та отримані щеплення{" "}
-          </Link>
+          Особистий кабінет із можливістю вносити показники ваги, зросту дитини
+          та отримані щеплення
         </AboutItem>
 
         <Image src={image3} alt="Picture of the children" width={250} />

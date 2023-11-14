@@ -2,7 +2,7 @@ import { collection, doc, setDoc, getDoc } from 'firebase/firestore/lite';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { firestore } from "@/services/firebase";
 import {auth} from "@/services/firebase"
-import { CreateUserData } from './types';
+import { CreateUserData, User } from './types';
 
 
 
@@ -23,23 +23,24 @@ export async function signUp(data: CreateUserData) {
 }
 
 
-export function login (email: string, password: string) {
-    signInWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
+export async function login(email: string, password: string) {
+  try {
+    const authUser = await signInWithEmailAndPassword(auth, email, password)
+    const user = await getUser(authUser.user.uid)
 
     return user
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-  })};
+  } catch (error) {
+    return null
+  }
+}
 
 
-export async function getUser (uid){
-    const userDocRef = doc(userCollection, uid)
-    const userDoc = await getDoc(userDocRef);
-   return userDoc
-   
+export async function getUser(uid: string) {
+  const userDocRef = doc(userCollection, uid)
+  const userSnapshot = await getDoc(userDocRef)
+
+  return {
+    id: userSnapshot.id,
+    ...userSnapshot.data(),
+  } as User
 }

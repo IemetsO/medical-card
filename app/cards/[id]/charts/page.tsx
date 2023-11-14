@@ -1,4 +1,5 @@
 "use client"
+import Link from "next/link"
 import { Chart } from "@/components/chart"
 import { useParams } from "next/navigation"
 import { getCardById } from "@/domains/cards/services"
@@ -9,8 +10,10 @@ import {
   WeightForHeightMinus2,
   WeightForHeightPlus2,
 } from "./constant"
+import { Button } from "@/components/uikit/button"
+import { useRouter } from "next/router"
 
-export default function ChartItem() {
+export default function ChartsPage() {
   const { id: idParam } = useParams()
   const id = idParam as string
   const card = getCardById(id)
@@ -36,21 +39,29 @@ export default function ChartItem() {
     xKey: "weight",
     yKey: "height",
   }
-
+  function goBack() {
+    window.history.back()
+  }
   return (
     <div className="max-w-md m-auto text-center ">
+      <div className="flex flex-row items-baseline gap-2">
+        <Button className="mt-2 px-3" onClick={goBack}>
+          ←
+        </Button>
+        <p className="text-xs ">назад до карточки</p>
+      </div>
       <h2 className="text-sky-500 font-bold">
         Графік зріст/довжина тіла (см) до віку (м) дитини {card.name}
       </h2>
-      <Chart data={heightForAgeData} />
+      <Chart {...heightForAgeData} />
       <h2 className="text-sky-500 font-bold">
         Графік вага (кг) до віку (м) дитини {card.name}
       </h2>
-      <Chart data={weightForAgeData} />
+      <Chart {...weightForAgeData} />
       <h2 className="text-sky-500 font-bold">
         Графік вага (кг) до зросту (см) дитини {card.name}
       </h2>
-      <Chart data={weightForHeight} />
+      <Chart {...weightForHeight} />
     </div>
   )
 }
