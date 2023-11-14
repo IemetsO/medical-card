@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { Card } from "../../domains/cards/types"
+
+import { type Card } from "../../domains/cards/types"
 import { Table } from "@/components/table"
 
 type Props = {
@@ -8,7 +9,7 @@ type Props = {
 }
 export const CardsTable = ({ cards, handleDelete }: Props) => {
   return (
-    <Table className=" min-w-full mt-5">
+    <Table className=" mt-5 min-w-full">
       <thead>
         <tr>
           <th>ім&#39;я</th>
@@ -23,7 +24,7 @@ export const CardsTable = ({ cards, handleDelete }: Props) => {
             <td>
               <Link
                 href={`cards/${card.id}`}
-                className="text-sky-500 font-bold"
+                className="font-bold text-sky-500"
               >
                 {card?.name}
               </Link>

@@ -1,5 +1,4 @@
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
-import { CardRecord } from "@/domains/cards/types"
+import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts"
 
 type Props = {
   datas: Record<string, number>[][]

@@ -1,14 +1,16 @@
 "use client"
 
-import { usePathname } from "next/navigation"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
+
 import { cn } from "@/utils"
+
 import { HEADER_LINKS, LOGIN_REGISTRATION } from "./constant"
 
 export const Header = () => {
   const pathname = usePathname()
   return (
-    <header className="bg-sky-400 text-white font-bold p-6 flex items-center gap-5 ">
+    <header className="flex items-center gap-5 bg-sky-400 p-6 font-bold text-white ">
       {HEADER_LINKS.map((link) => (
         <Link
           key={link.text}

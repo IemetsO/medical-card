@@ -1,22 +1,21 @@
 export const HEADER_LINKS = [
-    {
-      href: '/',
-      text: "Про нас"
-    },
-    {
-        href: "/cards",
-        text: "Ваші картки"
-    },
-    
-  ]
+  {
+    href: "/",
+    text: "Про нас",
+  },
+  {
+    href: "/cards",
+    text: "Ваші картки",
+  },
+]
 
- export const LOGIN_REGISTRATION = [
+export const LOGIN_REGISTRATION = [
   {
-    href: 'registration',
-    text: "Реєстрація"
+    href: "registration",
+    text: "Реєстрація",
   },
   {
-      href: "login",
-      text: "Увійти"
+    href: "login",
+    text: "Увійти",
   },
- ]
+]

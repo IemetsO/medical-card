@@ -1,14 +1,15 @@
 "use client"
 import Link from "next/link"
-import { useState, useEffect } from "react"
-import { Card } from "../../domains/cards/types"
-import { Button } from "@/components/uikit/button"
-import { CardsTable } from "@/components/cardsTable"
-import { deleteCard, getCards } from "@/domains/cards/services"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
-export default function Cards(card: Card) {
-  const [cards, setCards] = useState([])
+import { CardsTable } from "@/components/cardsTable"
+import { Button } from "@/components/uikit/button"
+import { deleteCard, getCards } from "@/domains/cards/services"
+import { type Card } from "@/domains/cards/types"
+
+export default function Cards() {
+  const [cards, setCards] = useState<Card[]>([])
 
   useEffect(() => {
     const allCardsData = getCards()

@@ -1,7 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore} from 'firebase/firestore/lite';
-import { getAuth } from "firebase/auth";
+import { initializeApp } from "firebase/app"
+import { getAuth } from "firebase/auth"
+import { getFirestore } from "firebase/firestore"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,14 +13,11 @@ const firebaseConfig = {
   storageBucket: "medical-card-96b09.appspot.com",
   messagingSenderId: "908186369662",
   appId: "1:908186369662:web:fa779d1fed39f68016222f",
-  measurementId: "G-0SKKE7EXG5"
-};
+  measurementId: "G-0SKKE7EXG5",
+}
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-
+const app = initializeApp(firebaseConfig)
 
 export const auth = getAuth(app)
 

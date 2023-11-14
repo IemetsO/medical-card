@@ -6,7 +6,7 @@ export const Button = (props: Props) => {
     <button
       {...props}
       type={type ?? "button"}
-      className={`bg-sky-400 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded ${className}`}
+      className={`rounded bg-sky-400 px-4 py-2 font-bold text-white hover:bg-sky-500 ${className}`}
     />
   )
 }

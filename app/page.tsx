@@ -1,14 +1,15 @@
 import Image from "next/image"
+
 import AboutItem from "@/components/about-item"
+
 import image1 from "@/images/image1.jpg"
 import image2 from "@/images/image2.jpg"
 import image3 from "@/images/image3.jpg"
-import Link from "next/link"
 
 export default function About() {
   return (
     <div className="p-8">
-      <h1 className=" text-center text-lg text-black font-semibold">Про нас</h1>
+      <h1 className=" text-center text-lg font-semibold text-black">Про нас</h1>
 
       <div className="flex flex-row">
         <AboutItem>Розвиток здорової дитини. Поради для батьків</AboutItem>
