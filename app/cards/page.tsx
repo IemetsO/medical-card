@@ -4,21 +4,17 @@ import { useState, useEffect } from "react"
 import { Card } from "../../domains/cards/types"
 import { Button } from "@/components/uikit/button"
 import { CardsTable } from "@/components/cardsTable"
-import { deleteCard, getCards } from "@/domains/cards/services"
+import { getCards } from "@/domains/cards/services"
 import toast from "react-hot-toast"
+import { useCards } from "@/domains/card/hooks"
+import { deleteCard } from "@/domains/cards/services"
+import { useAuth } from "@/contexts/auth/hooks"
 
-export default function Cards(card: Card) {
-  const [cards, setCards] = useState([])
-
-  useEffect(() => {
-    const allCardsData = getCards()
-    setCards(allCardsData)
-  }, [])
+export default function Cards() {
+  const cards = useCards()
 
   function handleDelete(id: string) {
     deleteCard(id)
-    const allCardsData = getCards()
-    setCards(allCardsData)
     toast.success("Карточку видалено!")
   }
 

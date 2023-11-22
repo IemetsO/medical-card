@@ -3,13 +3,16 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
 import { Select } from "@/components/uikit/select"
-import { createCard } from "@/domains/cards/services"
+import { createCard } from "@/domains/card/services"
 import { useFormik } from "formik"
 import toast from "react-hot-toast"
 import * as Yup from "yup"
+import { ErrorMessage } from "@/components/errorMessage"
+import { useAuth } from "@/contexts/auth/hooks"
 
 export default function Cards() {
   const router = useRouter()
+  const { user } = useAuth()
 
   const formik = useFormik({
     initialValues: {
@@ -25,38 +28,42 @@ export default function Cards() {
       dateOfBirth: Yup.string().required("Обов'язкове поле"),
       gender: Yup.string().required("Обов'язкове поле"),
     }),
-    onSubmit: (values) => {
-      const newCard = createCard(
-        values.name.toUpperCase(),
-        values.dateOfBirth,
-        values.gender,
-      )
-
-      router.push(`/cards/${newCard.id}`)
+    onSubmit: async (values) => {
+      try {
+        const cardData = {
+          name: values.name.toUpperCase(),
+          dateOfBirth: values.dateOfBirth,
+          gender: values.gender,
+        }
+        const userId = user.id
+        const newCard = await createCard(userId, cardData)
+        router.push(`/cards/${newCard.id}`)
+      } catch (error) {
+        console.error("Помилка при створенні карти:", error)
+      }
     },
   })
   const showSuccessAlert = () => toast.success("Карточку створено!")
-  const { getFieldProps } = formik
+
+  const { getFieldProps, errors, touched } = formik
+  const getErrorMessage = (key: keyof typeof formik.touched) =>
+    touched[key] && errors[key] ? errors[key] : null
+
   return (
     <div className="mt-10 text-center">
       <h2 className="text-grey font-bold">Внесіть дані Вашої дитини</h2>
 
       <form className="flex-col mt-5  " onSubmit={formik.handleSubmit}>
         <Input {...getFieldProps("name")} label="Ім'я" type="text" />
-        {formik.touched.name && formik.errors.name ? (
-          <div className="text-red-500 text-xs">{formik.errors.name}</div>
-        ) : null}
+        <ErrorMessage>{getErrorMessage("name")}</ErrorMessage>
+
         <div className="mt-10  ">
           <Input
             {...getFieldProps("dateOfBirth")}
             label="Дата народження"
             type="Date"
           />
-          {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
-            <div className="text-red-500 text-xs">
-              {formik.errors.dateOfBirth}
-            </div>
-          ) : null}
+          <ErrorMessage>{getErrorMessage("dateOfBirth")}</ErrorMessage>
         </div>
 
         <div className="mt-10 ">
@@ -67,9 +74,7 @@ export default function Cards() {
             <option value="дівчинка">дівчинка</option>
             <option value="хлопчик">хлопчик</option>
           </Select>
-          {formik.touched.gender && formik.errors.gender ? (
-            <div className="text-red-500 text-xs">{formik.errors.gender}</div>
-          ) : null}
+          <ErrorMessage>{getErrorMessage("gender")}</ErrorMessage>
         </div>
         <div>
           <Button

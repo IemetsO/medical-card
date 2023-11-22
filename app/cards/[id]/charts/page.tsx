@@ -2,8 +2,8 @@
 import Link from "next/link"
 import { Chart } from "@/components/chart"
 import { useParams } from "next/navigation"
-import { getCardById } from "@/domains/cards/services"
-import { CardRecord } from "@/domains/cards/types"
+import { getCardById } from "@/domains/card/services"
+import { CardRecord } from "@/domains/card/record/types"
 import {
   HeightAndWeightForAgePlus3,
   HeightAndWeightForAgeMinus2,
@@ -11,16 +11,23 @@ import {
   WeightForHeightPlus2,
 } from "./constant"
 import { Button } from "@/components/uikit/button"
-import { useRouter } from "next/router"
+import { useAuth } from "@/contexts/auth/hooks"
+import { getCardRecords } from "@/domains/card/record/service"
 
 export default function ChartsPage() {
   const { id: idParam } = useParams()
   const id = idParam as string
-  const card = getCardById(id)
+  const { user } = useAuth()
+  const userId = user.id
+
+  const card = getCardById(userId, id)
+  const records = getCardRecords(userId, id)
+  console.log(records)
+
   if (!card) {
     return
   }
-  const chartData: CardRecord[] = card.records
+  const chartData: CardRecord[] = records
 
   const heightForAgeData = {
     datas: [chartData, HeightAndWeightForAgePlus3, HeightAndWeightForAgeMinus2],
@@ -43,7 +50,7 @@ export default function ChartsPage() {
     window.history.back()
   }
   return (
-    <div className="max-w-md m-auto text-center ">
+    <div className="max-w-6xl w-full m-auto text-center ">
       <div className="flex flex-row items-baseline gap-2">
         <Button className="mt-2 px-3" onClick={goBack}>
           ←

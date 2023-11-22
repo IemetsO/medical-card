@@ -4,16 +4,19 @@ import { useRouter, useParams } from "next/navigation"
 import { Button } from "@/components/uikit/button"
 import { Form } from "@/components/form"
 import { IndicatorsTable } from "@/components/indicatorsTable"
-import { getCardById, deleteCard, calculateAge } from "@/domains/cards/services"
+import { getCardById, deleteCard } from "@/domains/card/services"
 import toast from "react-hot-toast"
 import { useEffect } from "react"
+import { useAuth } from "@/contexts/auth/hooks"
 
 export default function CardItem() {
   const { id: idParam } = useParams()
   const router = useRouter()
   const id = idParam as string
-  const card = getCardById(id)
-
+  const { user } = useAuth()
+  const userId = user.uid
+  const card = getCardById(userId, id)
+  console.log(card)
   useEffect(() => {
     if (!card) {
       toast.error("Карточка не знайдена")
@@ -24,7 +27,7 @@ export default function CardItem() {
 
   function handleDelete() {
     toast.success("Карточку видалено!")
-    deleteCard(id)
+    // deleteCard(id)
     router.push("/cards")
   }
 
@@ -52,7 +55,7 @@ export default function CardItem() {
 
       <section>
         <h2 className="text-sky-500 font-bold">{card?.name}</h2>
-        <h2>{calculateAge(card.dateOfBirth)}</h2>
+        <h2></h2>
         <h2>{card?.gender}</h2>
       </section>
       <h2 className="mt-10 text-grey ">
