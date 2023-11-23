@@ -1,13 +1,15 @@
 "use client"
 import Link from "next/link"
-import { useRouter, useParams } from "next/navigation"
-import { Button } from "@/components/uikit/button"
+import { useParams, useRouter } from "next/navigation"
+import { useEffect } from "react"
+import toast from "react-hot-toast"
+
 import { Form } from "@/components/form"
 import { IndicatorsTable } from "@/components/indicatorsTable"
-import { getCardById, deleteCard } from "@/domains/card/services"
-import toast from "react-hot-toast"
-import { useEffect } from "react"
 import { useAuth } from "@/contexts/auth/hooks"
+import { getCardById } from "@/domains/card/services"
+import { Button } from "@/components/uikit/button"
+import { calculateAge } from "@/domains/card/helpers"
 
 export default function CardItem() {
   const { id: idParam } = useParams()
@@ -16,7 +18,7 @@ export default function CardItem() {
   const { user } = useAuth()
   const userId = user.uid
   const card = getCardById(userId, id)
-  console.log(card)
+
   useEffect(() => {
     if (!card) {
       toast.error("Карточка не знайдена")
@@ -39,7 +41,7 @@ export default function CardItem() {
   }
 
   return (
-    <div className="max-w-md m-auto bg-gray-50 p-8 rounded-md border-slate-400 text-center ">
+    <div className="m-auto max-w-md rounded-md border-slate-400 bg-gray-50 p-8 text-center ">
       <div className="flex flex-row place-content-between items-baseline">
         <div className="flex flex-row items-baseline gap-2">
           <Link href="/cards">
@@ -48,17 +50,17 @@ export default function CardItem() {
           <p className="text-xs ">назад до карток</p>
         </div>
         <div className="flex flex-row items-baseline">
-          <p className="text-xs mr-2">видалити картку</p>
+          <p className="mr-2 text-xs">видалити картку</p>
           <Button onClick={handleDelete}>🗑</Button>
         </div>
       </div>
 
       <section>
-        <h2 className="text-sky-500 font-bold">{card?.name}</h2>
-        <h2></h2>
+        <h2 className="font-bold text-sky-500">{card?.name}</h2>
+        <h2>{calculateAge(card.dateOfBirth)}</h2>
         <h2>{card?.gender}</h2>
       </section>
-      <h2 className="mt-10 text-grey ">
+      <h2 className="text-grey mt-10 ">
         Вкажіть вагу та зріст Вашої дитини по місяцям для побудови графіку
       </h2>
       <Form id={id} card={card} />

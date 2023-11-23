@@ -1,7 +1,7 @@
+import { Table } from "@/components/table"
 import { Button } from "@/components/uikit/button"
 import { calculateBMI, deleteRecordFromCard } from "@/domains/cards/services"
-import { Card } from "@/domains/cards/types"
-import { Table } from "@/components/table"
+import { type Card } from "@/domains/cards/types"
 
 type Props = {
   id: string
@@ -11,7 +11,7 @@ type Props = {
 export const IndicatorsTable = ({ id, card }: Props) => {
   return (
     <div className="text-xs">
-      <Table className=" min-w-full mt-5">
+      <Table className=" mt-5 min-w-full">
         <thead>
           <tr>
             <th>Вік (місяці)</th>

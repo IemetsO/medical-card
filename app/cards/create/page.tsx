@@ -1,14 +1,15 @@
 "use client"
+import { useFormik } from "formik"
 import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
+import * as Yup from "yup"
+
+import { ErrorMessage } from "@/components/errorMessage"
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
 import { Select } from "@/components/uikit/select"
-import { createCard } from "@/domains/card/services"
-import { useFormik } from "formik"
-import toast from "react-hot-toast"
-import * as Yup from "yup"
-import { ErrorMessage } from "@/components/errorMessage"
 import { useAuth } from "@/contexts/auth/hooks"
+import { createCard } from "@/domains/card/services"
 
 export default function Cards() {
   const router = useRouter()
@@ -53,7 +54,7 @@ export default function Cards() {
     <div className="mt-10 text-center">
       <h2 className="text-grey font-bold">Внесіть дані Вашої дитини</h2>
 
-      <form className="flex-col mt-5  " onSubmit={formik.handleSubmit}>
+      <form className="mt-5 flex-col  " onSubmit={formik.handleSubmit}>
         <Input {...getFieldProps("name")} label="Ім'я" type="text" />
         <ErrorMessage>{getErrorMessage("name")}</ErrorMessage>
 

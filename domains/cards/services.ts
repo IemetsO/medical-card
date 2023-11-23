@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid"
-import { Card } from "./types"
-import { CardRecord } from "./types"
+
+import { type Card } from "./types"
+import { type CardRecord } from "./types"
 
 export function createCard(name: string, dateOfBirth: string, gender: string) {
   const newCard: Card = {
@@ -23,41 +24,24 @@ export function deleteCard(id: string) {
   localStorage.setItem("cards", JSON.stringify(cards))
 }
 
-export function getCardById(id: string): Card | undefined  {
+export function getCardById(id: string): Card | undefined {
   const cards = getCards()
   return cards.find((e: Card) => e.id === id)
 }
 
-export function getCards(): Card[]{
+export function getCards(): Card[] {
   const cardsString = localStorage.getItem("cards")
   if (!cardsString) {
     return []
   }
 
-  return JSON.parse(cardsString)
+  return JSON.parse(cardsString) as Card[]
 }
 
 export function saveCard(newCard: Card) {
   const cards = getCards()
 
   localStorage.setItem("cards", JSON.stringify([...cards, newCard]))
-}
-
-export function calculateAge(dateOfBirth: string) {
-  const today = new Date()
-  const years = today.getFullYear() - new Date(dateOfBirth).getFullYear()
-
-  const months = today.getMonth() - new Date(dateOfBirth).getMonth()
-
-  const days = Math.round(
-    (today.getTime() - new Date(dateOfBirth).getTime()) / 86400000,
-  )
-
-  if (years === 0 && months === 0) {
-    return `вік ${days} днів`
-  } else {
-    return `вік ${years} років ${months} місяців`
-  }
 }
 
 export function updateCard(id: string, updatedCard: Card) {
@@ -74,7 +58,7 @@ export function addRecordToCard(cardId: string, record: CardRecord) {
     return
   }
   card.records.push(record)
-  card.records.sort((r1, r2) => r1.age - r2.age);
+  card.records.sort((r1, r2) => r1.age - r2.age)
   updateCard(cardId, card)
 }
 

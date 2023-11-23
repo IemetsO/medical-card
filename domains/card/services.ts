@@ -1,8 +1,15 @@
-import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore/lite"
+import {
+  collection,
+  addDoc,
+  getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore/lite"
 import { CreateCardData, UpdateCardData } from "./types"
-import {Card} from "@/domains/card/types"
+import { Card } from "@/domains/card/types"
 import { firestore } from "@/services/firebase"
-
 
 const userCollection = collection(firestore, "users")
 
@@ -21,16 +28,14 @@ export async function createCard(
 export async function getCards(userId: string): Promise<Card[]> {
   const collection = getCardCollection(userId)
   const snapshot = await getDocs(collection)
-console.log("GGG")
+  console.log("GGG")
   return snapshot.docs.map(
     (doc) =>
       ({
         id: doc.id,
         ...doc.data(),
       }) as Card,
-     
   )
- 
 }
 
 export async function getCardById(
