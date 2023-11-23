@@ -1,11 +1,11 @@
 "use client"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 
+import { Chart } from "@/components/chart"
 import { Button } from "@/components/uikit/button"
-import { useAuth } from "@/contexts/auth/hooks"
-import { getCardRecords } from "@/domains/card/record/service"
+import { useCard } from "@/domains/card/hooks"
+import { useCardRecords } from "@/domains/card/record/hooks"
 import { type CardRecord } from "@/domains/card/record/types"
-import { getCardById } from "@/domains/card/services"
 
 import {
   HeightAndWeightForAgeMinus2,
@@ -16,17 +16,17 @@ import {
 
 export default function ChartsPage() {
   const { id: idParam } = useParams()
-  const id = idParam as string
-  const { user } = useAuth()
-  const userId = user.id
+  const cardId = idParam as string
 
-  const card = getCardById(userId, id)
-  const records = getCardRecords(userId, id)
-  console.log(records)
+  const { card } = useCard(cardId)
+  const { records } = useCardRecords(cardId)
+
+  const router = useRouter()
 
   if (!card) {
     return
   }
+
   const chartData: CardRecord[] = records
 
   const heightForAgeData = {
@@ -46,9 +46,11 @@ export default function ChartsPage() {
     xKey: "weight",
     yKey: "height",
   }
+
   function goBack() {
-    window.history.back()
+    router.back()
   }
+
   return (
     <div className="m-auto w-full max-w-6xl text-center">
       <div className="flex flex-row items-baseline gap-2">

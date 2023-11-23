@@ -5,10 +5,10 @@ import toast from "react-hot-toast"
 import { CardsTable } from "@/components/cardsTable"
 import { Button } from "@/components/uikit/button"
 import { useCards } from "@/domains/card/hooks"
-import { deleteCard } from "@/domains/cards/services"
+import { deleteCard } from "@/domains/card/services"
 
 export default function Cards() {
-  const cards = useCards()
+  const { cards } = useCards()
 
   function handleDelete(id: string) {
     deleteCard(id)

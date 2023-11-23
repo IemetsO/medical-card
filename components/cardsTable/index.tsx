@@ -1,7 +1,7 @@
 import Link from "next/link"
 
-import { type Card } from "../../domains/cards/types"
 import { Table } from "@/components/table"
+import { type Card } from "@/domains/card/types"
 
 type Props = {
   cards: Card[]
@@ -9,7 +9,7 @@ type Props = {
 }
 export const CardsTable = ({ cards, handleDelete }: Props) => {
   return (
-    <Table className=" mt-5 min-w-full">
+    <Table className="mt-5 min-w-full">
       <thead>
         <tr>
           <th>ім&#39;я</th>
@@ -30,11 +30,11 @@ export const CardsTable = ({ cards, handleDelete }: Props) => {
               </Link>
             </td>
             <td>{card?.dateOfBirth}</td>
-            <td> {card?.gender}</td>
+            <td>{card?.gender}</td>
             <td>
               <button
                 type="button"
-                className="   text-sky-500 "
+                className="text-sky-500 "
                 onClick={() => handleDelete(card.id)}
               >
                 🗑

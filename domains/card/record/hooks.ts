@@ -1,24 +1,26 @@
-import {useAuth} from "@/contexts/auth/hooks"
-import { useState, useEffect } from "react"
-import { CardRecord } from "./types"
-import { getCardRecords } from "./service"
+import { useEffect, useState } from "react"
 
-export function useCardRecords(cardId: string) {
-    const { user } = useAuth()
-  
-    const [cardRecords, setCardRecords] = useState<CardRecord[]>([])
-  
-    useEffect(() => {
-      async function loadCardRecords() {
-        if (!user) {
-          return
-        }
-        const cardRecords = await getCardRecords(user.uid, cardId)
-        setCardRecords(cardRecords)
+import { useAuth } from "@/contexts/auth/hooks"
+
+import { getCardRecords } from "./service"
+import { type CardRecord } from "./types"
+
+export function useCardRecords(cardId: string): { records: CardRecord[] } {
+  const { user } = useAuth()
+
+  const [cardRecords, setCardRecords] = useState<CardRecord[]>([])
+
+  useEffect(() => {
+    async function loadCardRecords() {
+      if (!user) {
+        return
       }
-  
-      loadCardRecords()
-    }, [cardId, user])
-  
-    return cardRecords
-  }
+      const cardRecords = await getCardRecords(cardId)
+      setCardRecords(cardRecords)
+    }
+
+    loadCardRecords()
+  }, [cardId, user])
+
+  return { records: cardRecords }
+}

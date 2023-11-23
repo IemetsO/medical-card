@@ -8,12 +8,10 @@ import { ErrorMessage } from "@/components/errorMessage"
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
 import { Select } from "@/components/uikit/select"
-import { useAuth } from "@/contexts/auth/hooks"
 import { createCard } from "@/domains/card/services"
 
 export default function Cards() {
   const router = useRouter()
-  const { user } = useAuth()
 
   const formik = useFormik({
     initialValues: {
@@ -36,8 +34,7 @@ export default function Cards() {
           dateOfBirth: values.dateOfBirth,
           gender: values.gender,
         }
-        const userId = user.id
-        const newCard = await createCard(userId, cardData)
+        const newCard = await createCard(cardData)
         router.push(`/cards/${newCard.id}`)
       } catch (error) {
         console.error("Помилка при створенні карти:", error)

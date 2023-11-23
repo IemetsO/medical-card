@@ -1,34 +1,37 @@
 import {
-  collection,
   addDoc,
-  getDocs,
-  getDoc,
-  doc,
-  updateDoc,
+  collection,
   deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
 } from "firebase/firestore/lite"
-import { CreateCardData, UpdateCardData } from "./types"
-import { Card } from "@/domains/card/types"
+
+import { getCurrentUserIdOrThrow } from "../auth/services"
+import { type Card } from "@/domains/card/types"
 import { firestore } from "@/services/firebase"
+
+import { type CreateCardData, type UpdateCardData } from "./types"
 
 const userCollection = collection(firestore, "users")
 
 export const getCardCollection = (userId: string) =>
   collection(userCollection, userId, "cards")
 
-export async function createCard(
-  userId: string,
-  data: CreateCardData,
-): Promise<Card> {
-  const collection = getCardCollection(userId)
+export async function createCard(data: CreateCardData): Promise<Card> {
+  const currentUserId = getCurrentUserIdOrThrow()
+
+  const collection = getCardCollection(currentUserId)
   const docRef = await addDoc(collection, data)
-  return getCardById(userId, docRef.id)
+  return getCardById(docRef.id)
 }
 
-export async function getCards(userId: string): Promise<Card[]> {
-  const collection = getCardCollection(userId)
+export async function getCards(): Promise<Card[]> {
+  const currentUserId = getCurrentUserIdOrThrow()
+
+  const collection = getCardCollection(currentUserId)
   const snapshot = await getDocs(collection)
-  console.log("GGG")
   return snapshot.docs.map(
     (doc) =>
       ({
@@ -38,11 +41,10 @@ export async function getCards(userId: string): Promise<Card[]> {
   )
 }
 
-export async function getCardById(
-  userId: string,
-  cardId: string,
-): Promise<Card> {
-  const collection = getCardCollection(userId)
+export async function getCardById(cardId: string): Promise<Card> {
+  const currentUserId = getCurrentUserIdOrThrow()
+
+  const collection = getCardCollection(currentUserId)
   const snapshot = await getDoc(doc(collection, cardId))
 
   return {
@@ -52,22 +54,22 @@ export async function getCardById(
 }
 
 export async function updateCard(
-  userId: string,
   cardId: string,
   data: UpdateCardData,
 ): Promise<Card> {
-  const collection = getCardCollection(userId)
+  const currentUserId = getCurrentUserIdOrThrow()
+
+  const collection = getCardCollection(currentUserId)
 
   await updateDoc(doc(collection, cardId), data)
 
-  return getCardById(userId, cardId)
+  return getCardById(cardId)
 }
 
-export async function deleteCard(
-  userId: string,
-  cardId: string,
-): Promise<void> {
-  const collection = getCardCollection(userId)
+export async function deleteCard(cardId: string): Promise<void> {
+  const currentUserId = getCurrentUserIdOrThrow()
+
+  const collection = getCardCollection(currentUserId)
 
   await deleteDoc(doc(collection, cardId))
 }

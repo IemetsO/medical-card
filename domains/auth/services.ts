@@ -4,6 +4,7 @@ import {
 } from "firebase/auth"
 import { collection, doc, getDoc, setDoc } from "firebase/firestore"
 
+import { UnauthorizedError } from "@/services/error/errors"
 import { firestore } from "@/services/firebase"
 import { auth } from "@/services/firebase"
 
@@ -47,4 +48,13 @@ export async function getUser(uid: string) {
     id: userSnapshot.id,
     ...userSnapshot.data(),
   } as User
+}
+
+export function getCurrentUserIdOrThrow() {
+  const currentUser = auth.currentUser
+  if (!currentUser) {
+    throw new UnauthorizedError()
+  }
+
+  return currentUser.uid
 }

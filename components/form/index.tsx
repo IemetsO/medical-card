@@ -4,15 +4,15 @@ import * as Yup from "yup"
 
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
-import { addRecordToCard } from "@/domains/cards/services"
-import { type Card } from "@/domains/cards/types"
+import { createCardRecord } from "@/domains/card/record/service"
+import { type CardRecord } from "@/domains/card/record/types"
 
 type Props = {
   id: string
-  card: Card
+  records: CardRecord[]
 }
 
-export const Form = ({ id, card }: Props) => {
+export const Form = ({ id, records }: Props) => {
   const formik = useFormik({
     initialValues: {
       age: 0,
@@ -26,13 +26,16 @@ export const Form = ({ id, card }: Props) => {
       height: Yup.number().required("Обов'язкове поле"),
     }),
     onSubmit: (values) => {
-      if (card?.records.find((recordItem) => recordItem.age === values.age)) {
+      if (records.find((recordItem) => recordItem.age === values.age)) {
         toast.error("Показники данного віку внесені")
+        return
       }
-      addRecordToCard(id, values)
+      createCardRecord(id, values)
     },
   })
+
   const { getFieldProps } = formik
+
   return (
     <form className="mt-10 " onSubmit={formik.handleSubmit}>
       <Input
