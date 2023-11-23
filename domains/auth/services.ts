@@ -12,6 +12,10 @@ import { type CreateUserData, type User } from "./types"
 
 const userCollection = collection(firestore, "users")
 
+export const getUserCollection = () => {
+  return userCollection
+}
+
 export async function signUp(data: CreateUserData) {
   const { password, ...dataWithoutPassword } = data
 
@@ -22,7 +26,7 @@ export async function signUp(data: CreateUserData) {
   )
   // here we should create user in database
 
-  const userDoc = doc(userCollection, userCredential.user.uid)
+  const userDoc = doc(getUserCollection(), userCredential.user.uid)
 
   const savedUser = await setDoc(userDoc, dataWithoutPassword)
 
@@ -41,13 +45,17 @@ export async function login(email: string, password: string) {
 }
 
 export async function getUser(uid: string) {
-  const userDocRef = doc(userCollection, uid)
-  const userSnapshot = await getDoc(userDocRef)
+  try {
+    const userDocRef = doc(getUserCollection(), uid)
+    const userSnapshot = await getDoc(userDocRef)
 
-  return {
-    id: userSnapshot.id,
-    ...userSnapshot.data(),
-  } as User
+    return {
+      id: userSnapshot.id,
+      ...userSnapshot.data(),
+    } as User
+  } catch (error) {
+    return null
+  }
 }
 
 export function getCurrentUserIdOrThrow() {

@@ -6,7 +6,7 @@ import {
   getDoc,
   getDocs,
   updateDoc,
-} from "firebase/firestore/lite"
+} from "firebase/firestore"
 
 import { getCardCollection } from "../services"
 import { getCurrentUserIdOrThrow } from "@/domains/auth/services"

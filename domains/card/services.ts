@@ -6,25 +6,27 @@ import {
   getDoc,
   getDocs,
   updateDoc,
-} from "firebase/firestore/lite"
+} from "firebase/firestore"
 
-import { getCurrentUserIdOrThrow } from "../auth/services"
+import { getCurrentUserIdOrThrow, getUserCollection } from "../auth/services"
 import { type Card } from "@/domains/card/types"
-import { firestore } from "@/services/firebase"
 
 import { type CreateCardData, type UpdateCardData } from "./types"
 
-const userCollection = collection(firestore, "users")
-
 export const getCardCollection = (userId: string) =>
-  collection(userCollection, userId, "cards")
+  collection(getUserCollection(), userId, "cards")
 
 export async function createCard(data: CreateCardData): Promise<Card> {
   const currentUserId = getCurrentUserIdOrThrow()
 
-  const collection = getCardCollection(currentUserId)
-  const docRef = await addDoc(collection, data)
-  return getCardById(docRef.id)
+  try {
+    const collection = getCardCollection(currentUserId)
+    const docRef = await addDoc(collection, data)
+    return getCardById(docRef.id)
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
 }
 
 export async function getCards(): Promise<Card[]> {
