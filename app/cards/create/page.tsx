@@ -66,7 +66,7 @@ export default function Cards() {
 
         <div className="mt-10 ">
           <Select {...getFieldProps("gender")}>
-            <option value="" selected disabled>
+            <option value="" disabled>
               Оберіть стать
             </option>
             <option value="дівчинка">дівчинка</option>

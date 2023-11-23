@@ -27,7 +27,13 @@ export function AuthProvider({ children }: Props) {
           setContextValue({ firebaseUser: undefined, user: undefined })
           return
         }
+
         const changedUser = await getUser(changedFirebaseUser.uid)
+        if (!changedUser) {
+          setContextValue({ firebaseUser: undefined, user: undefined })
+          return
+        }
+
         setContextValue({
           firebaseUser: changedFirebaseUser,
           user: changedUser,
