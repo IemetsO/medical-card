@@ -8,55 +8,44 @@ import {
   updateDoc,
 } from "firebase/firestore"
 
-import { getCardCollection } from "../services"
-import { getCurrentUserIdOrThrow } from "@/domains/auth/services"
+import { getCardsCollection } from "../services"
 
+import { documentSnapshotToCardRecord } from "./helpers"
 import { type CreateCardRecordData, type UpdateCardRecordData } from "./types"
 import { type CardRecord } from "./types"
 
-const getCardRecordCollection = (currentUserId: string, cardId: string) =>
-  collection(getCardCollection(currentUserId), cardId, "records")
+export function getCardRecordsCollection(cardId: string) {
+  return collection(getCardsCollection(), cardId, "records")
+}
+
+export function getCardRecordDocument(cardId: string, cardRecordId: string) {
+  return doc(getCardRecordsCollection(cardId), cardRecordId)
+}
 
 export async function createCardRecord(
   cardId: string,
   data: CreateCardRecordData,
 ): Promise<CardRecord> {
-  const currentUserId = getCurrentUserIdOrThrow()
-
-  const collection = getCardRecordCollection(currentUserId, cardId)
+  const collection = getCardRecordsCollection(cardId)
   const docRef = await addDoc(collection, data)
 
   return getCardRecordById(cardId, docRef.id)
 }
 
 export async function getCardRecords(cardId: string): Promise<CardRecord[]> {
-  const currentUserId = getCurrentUserIdOrThrow()
-
-  const collection = getCardRecordCollection(currentUserId, cardId)
+  const collection = getCardRecordsCollection(cardId)
   const snapshot = await getDocs(collection)
 
-  return snapshot.docs.map(
-    (doc) =>
-      ({
-        id: doc.id,
-        ...doc.data(),
-      }) as CardRecord,
-  )
+  return snapshot.docs.map(documentSnapshotToCardRecord)
 }
 
 export async function getCardRecordById(
   cardId: string,
   cardRecordId: string,
 ): Promise<CardRecord> {
-  const currentUserId = getCurrentUserIdOrThrow()
+  const snapshot = await getDoc(getCardRecordDocument(cardId, cardRecordId))
 
-  const collection = getCardRecordCollection(currentUserId, cardId)
-  const snapshot = await getDoc(doc(collection, cardRecordId))
-
-  return {
-    id: snapshot.id,
-    ...snapshot.data(),
-  } as CardRecord
+  return documentSnapshotToCardRecord(snapshot)
 }
 
 export async function updateCardRecord(
@@ -64,11 +53,7 @@ export async function updateCardRecord(
   cardRecordId: string,
   data: UpdateCardRecordData,
 ): Promise<CardRecord> {
-  const currentUserId = getCurrentUserIdOrThrow()
-
-  const collection = getCardRecordCollection(currentUserId, cardId)
-
-  await updateDoc(doc(collection, cardRecordId), data)
+  await updateDoc(getCardRecordDocument(cardId, cardRecordId), data)
 
   return getCardRecordById(cardId, cardRecordId)
 }
@@ -77,9 +62,5 @@ export async function deleteCardRecord(
   cardId: string,
   cardRecordId: string,
 ): Promise<void> {
-  const currentUserId = getCurrentUserIdOrThrow()
-
-  const collection = getCardRecordCollection(currentUserId, cardId)
-
-  await deleteDoc(doc(collection, cardRecordId))
+  return deleteDoc(getCardRecordDocument(cardId, cardRecordId))
 }

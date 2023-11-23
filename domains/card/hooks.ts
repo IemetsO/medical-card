@@ -1,9 +1,11 @@
+import { onSnapshot } from "firebase/firestore"
 import { useEffect, useState } from "react"
 
 import { useAuth } from "@/contexts/auth/hooks"
 import { type Card } from "@/domains/card/types"
 
-import { getCardById, getCards } from "./services"
+import { documentSnapshotToCard } from "./helpers"
+import { getCardDocument, getCardsCollection } from "./services"
 
 export function useCards(): { cards: Card[] } {
   const { user } = useAuth()
@@ -11,15 +13,12 @@ export function useCards(): { cards: Card[] } {
   const [cards, setCards] = useState<Card[]>([])
 
   useEffect(() => {
-    async function loadCards() {
-      if (!user) {
-        return
-      }
-      const cards = await getCards()
+    const unsubscribe = onSnapshot(getCardsCollection(), (snapshot) => {
+      const cards = snapshot.docs.map(documentSnapshotToCard)
       setCards(cards)
-    }
+    })
 
-    loadCards()
+    return unsubscribe
   }, [user])
 
   return { cards }
@@ -35,22 +34,19 @@ export function useCard(cardId: string): {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    async function loadCard() {
-      if (!user) {
-        setIsLoading(false)
-        return
-      }
-
-      setIsLoading(true)
-      try {
-        const card = await getCardById(cardId)
+    const unsubscribe = onSnapshot(
+      getCardDocument(cardId),
+      (snapshot) => {
+        const card = documentSnapshotToCard(snapshot)
         setCard(card)
-      } finally {
         setIsLoading(false)
-      }
-    }
+      },
+      () => {
+        setIsLoading(false)
+      },
+    )
 
-    loadCard()
+    return unsubscribe
   }, [cardId, user])
 
   return { card, isLoading }

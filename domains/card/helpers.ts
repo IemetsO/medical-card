@@ -1,3 +1,7 @@
+import { type DocumentSnapshot } from "firebase/firestore"
+
+import { type Card } from "./types"
+
 export function calculateAge(dateOfBirth: string) {
   const today = new Date()
   const years = today.getFullYear() - new Date(dateOfBirth).getFullYear()
@@ -13,4 +17,11 @@ export function calculateAge(dateOfBirth: string) {
   } else {
     return `вік ${years} років ${months} місяців`
   }
+}
+
+export function documentSnapshotToCard(snapshot: DocumentSnapshot) {
+  return {
+    id: snapshot.id,
+    ...snapshot.data(),
+  } as Card
 }
