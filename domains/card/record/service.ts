@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  type DocumentSnapshot,
   getDoc,
   getDocs,
   updateDoc,
@@ -10,7 +11,6 @@ import {
 
 import { getCardsCollection } from "../services"
 
-import { documentSnapshotToCardRecord } from "./helpers"
 import { type CreateCardRecordData, type UpdateCardRecordData } from "./types"
 import { type CardRecord } from "./types"
 
@@ -20,6 +20,13 @@ export function getCardRecordsCollection(cardId: string) {
 
 export function getCardRecordDocument(cardId: string, cardRecordId: string) {
   return doc(getCardRecordsCollection(cardId), cardRecordId)
+}
+
+export function documentSnapshotToCardRecord(snapshot: DocumentSnapshot) {
+  return {
+    id: snapshot.id,
+    ...snapshot.data(),
+  } as CardRecord
 }
 
 export async function createCardRecord(

@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  type DocumentSnapshot,
   getDoc,
   getDocs,
   updateDoc,
@@ -11,7 +12,6 @@ import {
 import { getCurrentUserIdOrThrow, getUserCollection } from "../auth/services"
 import { type Card } from "@/domains/card/types"
 
-import { documentSnapshotToCard } from "./helpers"
 import { type CreateCardData, type UpdateCardData } from "./types"
 
 export function getCardsCollection() {
@@ -21,6 +21,13 @@ export function getCardsCollection() {
 
 export function getCardDocument(cardId: string) {
   return doc(getCardsCollection(), cardId)
+}
+
+export function documentSnapshotToCard(snapshot: DocumentSnapshot) {
+  return {
+    id: snapshot.id,
+    ...snapshot.data(),
+  } as Card
 }
 
 export async function createCard(data: CreateCardData): Promise<Card> {
