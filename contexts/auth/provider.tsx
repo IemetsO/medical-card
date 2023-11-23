@@ -16,6 +16,7 @@ export function AuthProvider({ children }: Props) {
   const [contextValue, setContextValue] = useState<AuthContextType>({
     firebaseUser: undefined,
     user: undefined,
+    isInitialized: false,
   })
 
   useEffect(() => {
@@ -24,19 +25,28 @@ export function AuthProvider({ children }: Props) {
 
       async (changedFirebaseUser) => {
         if (!changedFirebaseUser) {
-          setContextValue({ firebaseUser: undefined, user: undefined })
+          setContextValue({
+            firebaseUser: undefined,
+            user: undefined,
+            isInitialized: true,
+          })
           return
         }
 
         const changedUser = await getUser(changedFirebaseUser.uid)
         if (!changedUser) {
-          setContextValue({ firebaseUser: undefined, user: undefined })
+          setContextValue({
+            firebaseUser: undefined,
+            user: undefined,
+            isInitialized: true,
+          })
           return
         }
 
         setContextValue({
           firebaseUser: changedFirebaseUser,
           user: changedUser,
+          isInitialized: true,
         })
       },
     )
