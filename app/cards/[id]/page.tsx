@@ -7,31 +7,37 @@ import toast from "react-hot-toast"
 import { Form } from "@/components/form"
 import { IndicatorsTable } from "@/components/indicatorsTable"
 import { Button } from "@/components/uikit/button"
-import { calculateAge, deleteCard, getCardById } from "@/domains/cards/services"
+import { calculateAge } from "@/domains/card/helpers"
+import { useCard } from "@/domains/card/hooks"
+import { useCardRecords } from "@/domains/card/record/hooks"
+import { deleteCard } from "@/domains/card/services"
 
 export default function CardItem() {
   const { id: idParam } = useParams()
   const router = useRouter()
-  const id = idParam as string
-  const card = getCardById(id)
+  const cardId = idParam as string
+
+  const { card, isLoading: isCardLoading } = useCard(cardId)
+  const { records } = useCardRecords(cardId)
 
   useEffect(() => {
-    if (!card) {
+    if (!card && !isCardLoading) {
       toast.error("Карточка не знайдена")
 
       router.replace("/cards")
     }
-  }, [card, router])
+  }, [card, isCardLoading, router])
 
-  function handleDelete() {
+  async function handleDelete() {
+    await deleteCard(cardId)
     toast.success("Карточку видалено!")
-    deleteCard(id)
     router.push("/cards")
   }
 
   function goToChart() {
-    router.push(`/cards/${id}/charts`)
+    router.push(`/cards/${cardId}/charts`)
   }
+
   if (!card) {
     return null
   }
@@ -59,8 +65,8 @@ export default function CardItem() {
       <h2 className="text-grey mt-10 ">
         Вкажіть вагу та зріст Вашої дитини по місяцям для побудови графіку
       </h2>
-      <Form id={id} card={card} />
-      <IndicatorsTable id={id} card={card} />
+      <Form id={cardId} records={records} />
+      <IndicatorsTable id={cardId} records={records} />
       <Button type="submit" className="mb-6 mt-5" onClick={goToChart}>
         Побудувати графік
       </Button>

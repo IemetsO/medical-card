@@ -4,12 +4,21 @@ import {
 } from "firebase/auth"
 import { collection, doc, getDoc, setDoc } from "firebase/firestore"
 
+import { UnauthorizedError } from "@/services/error/errors"
 import { firestore } from "@/services/firebase"
 import { auth } from "@/services/firebase"
 
 import { type CreateUserData, type User } from "./types"
 
 const userCollection = collection(firestore, "users")
+
+export function getUserCollection() {
+  return userCollection
+}
+
+function getUserDocument(uid: string) {
+  return doc(getUserCollection(), uid)
+}
 
 export async function signUp(data: CreateUserData) {
   const { password, ...dataWithoutPassword } = data
@@ -21,7 +30,7 @@ export async function signUp(data: CreateUserData) {
   )
   // here we should create user in database
 
-  const userDoc = doc(userCollection, userCredential.user.uid)
+  const userDoc = getUserDocument(userCredential.user.uid)
 
   const savedUser = await setDoc(userDoc, dataWithoutPassword)
 
@@ -40,11 +49,24 @@ export async function login(email: string, password: string) {
 }
 
 export async function getUser(uid: string) {
-  const userDocRef = doc(userCollection, uid)
-  const userSnapshot = await getDoc(userDocRef)
+  try {
+    const userDocRef = getUserDocument(uid)
+    const userSnapshot = await getDoc(userDocRef)
 
-  return {
-    id: userSnapshot.id,
-    ...userSnapshot.data(),
-  } as User
+    return {
+      id: userSnapshot.id,
+      ...userSnapshot.data(),
+    } as User
+  } catch (error) {
+    return null
+  }
+}
+
+export function getCurrentUserIdOrThrow() {
+  const currentUser = auth.currentUser
+  if (!currentUser) {
+    throw new UnauthorizedError()
+  }
+
+  return currentUser.uid
 }

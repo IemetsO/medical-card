@@ -1,14 +1,15 @@
 import { Table } from "@/components/table"
 import { Button } from "@/components/uikit/button"
-import { calculateBMI, deleteRecordFromCard } from "@/domains/cards/services"
-import { type Card } from "@/domains/cards/types"
+import { calculateBMI } from "@/domains/card/record/helpers"
+import { deleteCardRecord } from "@/domains/card/record/service"
+import { type CardRecord } from "@/domains/card/record/types"
 
 type Props = {
   id: string
-  card: Card
+  records: CardRecord[]
 }
 
-export const IndicatorsTable = ({ id, card }: Props) => {
+export const IndicatorsTable = ({ id, records }: Props) => {
   return (
     <div className="text-xs">
       <Table className=" mt-5 min-w-full">
@@ -17,12 +18,12 @@ export const IndicatorsTable = ({ id, card }: Props) => {
             <th>Вік (місяці)</th>
             <th>Вага (кг)</th>
             <th>Зріст (см)</th>
-            <th> ІМТ</th>
+            <th>ІМТ</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {card.records.map((item) => (
+          {records.map((item) => (
             <tr key={item.age}>
               <td>{item.age} міс</td>
               <td>{item.weight} кг</td>
@@ -31,7 +32,7 @@ export const IndicatorsTable = ({ id, card }: Props) => {
               <td>
                 <Button
                   onClick={() => {
-                    deleteRecordFromCard(id, item.age)
+                    deleteCardRecord(id, item.id)
                   }}
                 >
                   🗑

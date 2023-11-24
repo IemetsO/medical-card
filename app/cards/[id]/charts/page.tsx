@@ -1,10 +1,11 @@
 "use client"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 
 import { Chart } from "@/components/chart"
 import { Button } from "@/components/uikit/button"
-import { getCardById } from "@/domains/cards/services"
-import { type CardRecord } from "@/domains/cards/types"
+import { useCard } from "@/domains/card/hooks"
+import { useCardRecords } from "@/domains/card/record/hooks"
+import { type CardRecord } from "@/domains/card/record/types"
 
 import {
   HeightAndWeightForAgeMinus2,
@@ -15,12 +16,18 @@ import {
 
 export default function ChartsPage() {
   const { id: idParam } = useParams()
-  const id = idParam as string
-  const card = getCardById(id)
+  const cardId = idParam as string
+
+  const { card } = useCard(cardId)
+  const { records } = useCardRecords(cardId)
+
+  const router = useRouter()
+
   if (!card) {
     return
   }
-  const chartData: CardRecord[] = card.records
+
+  const chartData: CardRecord[] = records
 
   const heightForAgeData = {
     datas: [chartData, HeightAndWeightForAgePlus3, HeightAndWeightForAgeMinus2],
@@ -39,11 +46,13 @@ export default function ChartsPage() {
     xKey: "weight",
     yKey: "height",
   }
+
   function goBack() {
-    window.history.back()
+    router.back()
   }
+
   return (
-    <div className="m-auto max-w-md text-center ">
+    <div className="m-auto w-full max-w-6xl text-center">
       <div className="flex flex-row items-baseline gap-2">
         <Button className="mt-2 px-3" onClick={goBack}>
           ←

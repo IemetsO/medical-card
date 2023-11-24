@@ -1,25 +1,17 @@
 "use client"
 import Link from "next/link"
-import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
 import { CardsTable } from "@/components/cardsTable"
 import { Button } from "@/components/uikit/button"
-import { deleteCard, getCards } from "@/domains/cards/services"
-import { type Card } from "@/domains/cards/types"
+import { useCards } from "@/domains/card/hooks"
+import { deleteCard } from "@/domains/card/services"
 
 export default function Cards() {
-  const [cards, setCards] = useState<Card[]>([])
-
-  useEffect(() => {
-    const allCardsData = getCards()
-    setCards(allCardsData)
-  }, [])
+  const { cards } = useCards()
 
   function handleDelete(id: string) {
     deleteCard(id)
-    const allCardsData = getCards()
-    setCards(allCardsData)
     toast.success("Карточку видалено!")
   }
 

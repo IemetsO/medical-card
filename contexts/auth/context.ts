@@ -6,9 +6,11 @@ import { type User } from "@/domains/auth/types"
 export type AuthContextType = {
   firebaseUser: FirebaseUser | undefined
   user: User | undefined
+  isInitialized: boolean
 }
 
 export const AuthContext = React.createContext<AuthContextType>({
   firebaseUser: undefined,
   user: undefined,
+  isInitialized: false,
 })
