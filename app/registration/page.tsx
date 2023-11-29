@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 import * as Yup from "yup"
 
-import { ErrorMessage } from "@/components/errorMessage"
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
 import { signUp } from "@/domains/auth/services"
@@ -17,6 +16,7 @@ export default function Registration() {
       name: "",
       email: "",
       password: "",
+      password2: "",
     },
 
     validationSchema: Yup.object({
@@ -25,6 +25,9 @@ export default function Registration() {
         .required("Обов'язкове поле"),
       email: Yup.string().required("Обов'язкове поле"),
       password: Yup.string().min(7).required("Обов'язкове поле"),
+      password2: Yup.string()
+        .oneOf([Yup.ref("password")], "Паролі повинні співпадати")
+        .required("Обов'язкове поле"),
     }),
     onSubmit: (values) => {
       signUp(values)
@@ -34,36 +37,42 @@ export default function Registration() {
   })
   const { getFieldProps, errors, touched } = formik
 
-  const getErrorMessage = (key: keyof typeof formik.touched) =>
+  const getErrorMessage = (key: keyof typeof touched) =>
     touched[key] && errors[key] ? errors[key] : null
 
   return (
     <div className="mt-5 text-center">
       <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit}>
-        <Input {...getFieldProps("name")} label="Ім'я" type="text" />
-        <ErrorMessage>{getErrorMessage("name")}</ErrorMessage>
+        <Input
+          {...getFieldProps("name")}
+          label="Ім'я"
+          type="text"
+          error={getErrorMessage("name")}
+        />
 
         <div>
           <Input
             {...getFieldProps("email")}
             label="Електронна пошта"
             type="email"
+            error={getErrorMessage("email")}
           />
-          <ErrorMessage>{getErrorMessage("email")}</ErrorMessage>
         </div>
         <div>
           <Input
             {...getFieldProps("password")}
             label="Пароль"
             type="password"
+            error={getErrorMessage("password")}
           />
-          <ErrorMessage>{getErrorMessage("password")}</ErrorMessage>
+
           <Input
-            {...getFieldProps("password")}
+            {...getFieldProps("password2")}
             label="Повторіть пароль"
             type="password"
+            error={getErrorMessage("password2")}
           />
-          <ErrorMessage>{getErrorMessage("password")}</ErrorMessage>
+
           <Button type="submit" className="mb-6 mt-5">
             Створити особистий кабінет
           </Button>

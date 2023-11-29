@@ -1,8 +1,11 @@
-export const HEADER_LINKS = [
+export const HEADER_ABOUT = [
   {
     href: "/",
     text: "Про нас",
   },
+]
+
+export const HEADER_CARDS = [
   {
     href: "/cards",
     text: "Ваші картки",
@@ -11,11 +14,11 @@ export const HEADER_LINKS = [
 
 export const LOGIN_REGISTRATION = [
   {
-    href: "registration",
+    href: "/registration",
     text: "Реєстрація",
   },
   {
-    href: "login",
+    href: "/login",
     text: "Увійти",
   },
 ]

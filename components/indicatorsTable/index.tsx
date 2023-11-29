@@ -25,9 +25,9 @@ export const IndicatorsTable = ({ id, records }: Props) => {
         <tbody>
           {records.map((item) => (
             <tr key={item.age}>
-              <td>{item.age} міс</td>
-              <td>{item.weight} кг</td>
-              <td>{item.height} см</td>
+              <td>{item.age} </td>
+              <td>{item.weight} </td>
+              <td>{item.height} </td>
               <td>{calculateBMI(item.weight, item.height)}кг/м2</td>
               <td>
                 <Button

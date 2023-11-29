@@ -1,5 +1,6 @@
 import React from "react"
 
+import { ErrorMessage } from "@/components/errorMessage"
 import { cn } from "@/utils"
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -18,7 +19,7 @@ const _Input = (props: Props, ref: React.ForwardedRef<HTMLInputElement>) => {
         ref={ref}
         className="h-10 w-2/3 border-2 border-sky-400"
       />
-      {error ? <p className="text-xs text-red-500">{error}</p> : null}
+      <ErrorMessage>{error}</ErrorMessage>
     </div>
   )
 }

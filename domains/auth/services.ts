@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth"
 import { collection, doc, getDoc, setDoc } from "firebase/firestore"
 
@@ -69,4 +70,12 @@ export function getCurrentUserIdOrThrow() {
   }
 
   return currentUser.uid
+}
+
+export async function logout() {
+  try {
+    await signOut(auth)
+  } catch (error) {
+    return null
+  }
 }
