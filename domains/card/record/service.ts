@@ -5,7 +5,7 @@ import {
   doc,
   type DocumentSnapshot,
   getDoc,
-  getDocs,
+ 
   updateDoc,
 } from "firebase/firestore"
 
@@ -39,12 +39,12 @@ export async function createCardRecord(
   return getCardRecordById(cardId, docRef.id)
 }
 
-export async function getCardRecords(cardId: string): Promise<CardRecord[]> {
-  const collection = getCardRecordsCollection(cardId)
-  const snapshot = await getDocs(collection)
+// TODO  export async function getCardRecords(cardId: string): Promise<CardRecord[]> {
+//   const collection = getCardRecordsCollection(cardId)
+//   const snapshot = await getDocs(collection)
 
-  return snapshot.docs.map(documentSnapshotToCardRecord)
-}
+//   return snapshot
+// }
 
 export async function getCardRecordById(
   cardId: string,

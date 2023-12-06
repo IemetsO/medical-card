@@ -1,8 +1,12 @@
+import { onSnapshot } from "firebase/firestore"
 import { useEffect, useState } from "react"
 
 import { useAuth } from "@/contexts/auth/hooks"
 
-import { getCardRecords } from "./service"
+import {
+  documentSnapshotToCardRecord,
+  getCardRecordsCollection,
+} from "./service"
 import { type CardRecord } from "./types"
 
 export function useCardRecords(cardId: string): { records: CardRecord[] } {
@@ -11,15 +15,16 @@ export function useCardRecords(cardId: string): { records: CardRecord[] } {
   const [cardRecords, setCardRecords] = useState<CardRecord[]>([])
 
   useEffect(() => {
-    async function loadCardRecords() {
-      if (!user) {
-        return
-      }
-      const cardRecords = await getCardRecords(cardId)
-      setCardRecords(cardRecords)
-    }
+    const unsubscribe = onSnapshot(
+      getCardRecordsCollection(cardId),
+      (snapshot) => {
+        const newCardRecords = snapshot.docs.map(documentSnapshotToCardRecord)
 
-    loadCardRecords()
+        setCardRecords(newCardRecords)
+      },
+    )
+
+    return unsubscribe
   }, [cardId, user])
 
   return { records: cardRecords }

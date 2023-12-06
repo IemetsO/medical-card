@@ -66,10 +66,15 @@ export default function CardItem() {
         Вкажіть вагу та зріст Вашої дитини по місяцям для побудови графіку
       </h2>
       <Form id={cardId} records={records} />
-      <IndicatorsTable id={cardId} records={records} />
-      <Button type="submit" className="mb-6 mt-5" onClick={goToChart}>
-        Побудувати графік
-      </Button>
+
+      {records.length > 0 && (
+        <div>
+          <IndicatorsTable id={cardId} records={records} />
+          <Button type="submit" className="mb-6 mt-5" onClick={goToChart}>
+            Побудувати графік
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

@@ -44,7 +44,8 @@ export default function Cards() {
   const showSuccessAlert = () => toast.success("Карточку створено!")
 
   const { getFieldProps, errors, touched } = formik
-  const getErrorMessage = (key: keyof typeof formik.touched) =>
+
+  const getErrorMessage = (key: keyof typeof touched) =>
     touched[key] && errors[key] ? errors[key] : null
 
   return (
@@ -52,16 +53,20 @@ export default function Cards() {
       <h2 className="text-grey font-bold">Внесіть дані Вашої дитини</h2>
 
       <form className="mt-5 flex-col  " onSubmit={formik.handleSubmit}>
-        <Input {...getFieldProps("name")} label="Ім'я" type="text" />
-        <ErrorMessage>{getErrorMessage("name")}</ErrorMessage>
+        <Input
+          {...getFieldProps("name")}
+          label="Ім'я"
+          type="text"
+          error={getErrorMessage("name")}
+        />
 
         <div className="mt-10  ">
           <Input
             {...getFieldProps("dateOfBirth")}
             label="Дата народження"
             type="Date"
+            error={getErrorMessage("dateOfBirth")}
           />
-          <ErrorMessage>{getErrorMessage("dateOfBirth")}</ErrorMessage>
         </div>
 
         <div className="mt-10 ">
