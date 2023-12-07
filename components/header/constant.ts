@@ -1,18 +1,18 @@
-export const HEADER_ABOUT = [
+export const ABOUT_PAGE_HEADER_LINKS = [
   {
     href: "/",
     text: "Про нас",
   },
 ]
 
-export const HEADER_CARDS = [
+export const AUTHED_HEADER_LINKS = [
   {
     href: "/cards",
     text: "Ваші картки",
   },
 ]
 
-export const LOGIN_REGISTRATION = [
+export const NOT_AUTHED_HEADER_LINKS = [
   {
     href: "/registration",
     text: "Реєстрація",
