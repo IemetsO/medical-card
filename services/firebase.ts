@@ -2,9 +2,7 @@ import { initializeApp } from "firebase/app"
 import { getAuth } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
-import { env } from '../env.mjs';
-
-
+import { env } from "../env.mjs"
 
 const firebaseConfig = {
   apiKey: env.client.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,15 +12,14 @@ const firebaseConfig = {
   messagingSenderId: env.client.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: env.client.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: env.client.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-};
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 
 export const auth = getAuth(app)
 
-export const  firestore = getFirestore(app)
-
+export const firestore = getFirestore(app)
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyD4STA5fRhtGEzmDyq7b7GooJAEyI036Hc",

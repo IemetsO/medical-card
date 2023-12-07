@@ -5,7 +5,6 @@ import {
   doc,
   type DocumentSnapshot,
   getDoc,
- 
   updateDoc,
 } from "firebase/firestore"
 
