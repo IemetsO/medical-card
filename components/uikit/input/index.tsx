@@ -1,7 +1,7 @@
 import React from "react"
 
 import { ErrorMessage } from "@/components/errorMessage"
-import { cn } from "@/utils"
+import { cn } from "@/utilities/cn"
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: React.ReactNode

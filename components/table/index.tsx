@@ -1,4 +1,4 @@
-import { cn } from "@/utils"
+import { cn } from "@/utilities/cn"
 
 import styles from "./styles.module.css"
 

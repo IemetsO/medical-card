@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/uikit/button"
 import { useAuth } from "@/contexts/auth/hooks"
 import { logout } from "@/domains/auth/services"
-import { cn } from "@/utils"
+import { cn } from "@/utilities/cn"
 
 import {
   ABOUT_PAGE_HEADER_LINKS,
