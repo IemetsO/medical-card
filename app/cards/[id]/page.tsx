@@ -34,10 +34,6 @@ export default function CardItem() {
     router.push("/cards")
   }
 
-  function goToChart() {
-    router.push(`/cards/${cardId}/charts`)
-  }
-
   if (!card) {
     return null
   }
@@ -70,9 +66,9 @@ export default function CardItem() {
       {records.length > 0 && (
         <div>
           <IndicatorsTable id={cardId} records={records} />
-          <Button type="submit" className="mb-6 mt-5" onClick={goToChart}>
-            Побудувати графік
-          </Button>
+          <Link href={`/cards/${cardId}/charts`} className="mb-6 mt-5">
+            <Button>Побудувати графік</Button>
+          </Link>
         </div>
       )}
     </div>

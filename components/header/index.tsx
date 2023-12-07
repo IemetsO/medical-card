@@ -8,43 +8,42 @@ import { useAuth } from "@/contexts/auth/hooks"
 import { logout } from "@/domains/auth/services"
 import { cn } from "@/utils"
 
-import { HEADER_ABOUT, HEADER_CARDS, LOGIN_REGISTRATION } from "./constant"
+import {
+  ABOUT_PAGE_HEADER_LINKS,
+  AUTHED_HEADER_LINKS,
+  NOT_AUTHED_HEADER_LINKS,
+} from "./constant"
 
 export const Header = () => {
   const pathname = usePathname()
-  const user = useAuth()
+  const { user } = useAuth()
 
-  let sectionNode
+  const sectionNode = !user ? (
+    <div className="flex flex-row items-center gap-5">
+      {NOT_AUTHED_HEADER_LINKS.map((link) => (
+        <Link key={link.text} href={link.href}>
+          {link.text}
+        </Link>
+      ))}
+    </div>
+  ) : (
+    <div className="flex flex-row items-center gap-5">
+      {AUTHED_HEADER_LINKS.map((link) => (
+        <Link
+          key={link.text}
+          className={cn("link", pathname === link.href && "underline")}
+          href={link.href}
+        >
+          {link.text}
+        </Link>
+      ))}
+      <p>{user?.name}</p> <Button onClick={logout}>Вийти</Button>
+    </div>
+  )
 
-  if (!user.user) {
-    sectionNode = (
-      <div className="flex flex-row items-center gap-5">
-        {LOGIN_REGISTRATION.map((link) => (
-          <Link key={link.text} href={link.href}>
-            {link.text}
-          </Link>
-        ))}
-      </div>
-    )
-  } else {
-    sectionNode = (
-      <div className="flex flex-row items-center gap-5">
-        {HEADER_CARDS.map((link) => (
-          <Link
-            key={link.text}
-            className={cn("link", pathname === link.href && "underline")}
-            href={link.href}
-          >
-            {link.text}
-          </Link>
-        ))}
-        <p>{user?.user?.name}</p> <Button onClick={logout}>Вийти</Button>
-      </div>
-    )
-  }
   return (
     <header className="flex items-center gap-10 bg-sky-400 p-6 font-bold text-white ">
-      {HEADER_ABOUT.map((link) => (
+      {ABOUT_PAGE_HEADER_LINKS.map((link) => (
         <Link
           key={link.text}
           className={cn("link", pathname === link.href && "underline")}

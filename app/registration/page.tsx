@@ -16,7 +16,7 @@ export default function Registration() {
       name: "",
       email: "",
       password: "",
-      password2: "",
+      confirmPassword: "",
     },
 
     validationSchema: Yup.object({
@@ -25,12 +25,12 @@ export default function Registration() {
         .required("Обов'язкове поле"),
       email: Yup.string().required("Обов'язкове поле"),
       password: Yup.string().min(7).required("Обов'язкове поле"),
-      password2: Yup.string()
+      confirmPassword: Yup.string()
         .oneOf([Yup.ref("password")], "Паролі повинні співпадати")
         .required("Обов'язкове поле"),
     }),
-    onSubmit: (values) => {
-      signUp(values)
+    onSubmit: ({ confirmPassword, ...requestData }) => {
+      signUp(requestData)
       toast.success("Особистий кабінет створено")
       router.push(`/cards`)
     },
@@ -50,33 +50,30 @@ export default function Registration() {
           error={getErrorMessage("name")}
         />
 
-        <div>
-          <Input
-            {...getFieldProps("email")}
-            label="Електронна пошта"
-            type="email"
-            error={getErrorMessage("email")}
-          />
-        </div>
-        <div>
-          <Input
-            {...getFieldProps("password")}
-            label="Пароль"
-            type="password"
-            error={getErrorMessage("password")}
-          />
+        <Input
+          {...getFieldProps("email")}
+          label="Електронна пошта"
+          type="email"
+          error={getErrorMessage("email")}
+        />
 
-          <Input
-            {...getFieldProps("password2")}
-            label="Повторіть пароль"
-            type="password"
-            error={getErrorMessage("password2")}
-          />
+        <Input
+          {...getFieldProps("password")}
+          label="Пароль"
+          type="password"
+          error={getErrorMessage("password")}
+        />
 
-          <Button type="submit" className="mb-6 mt-5">
-            Створити особистий кабінет
-          </Button>
-        </div>
+        <Input
+          {...getFieldProps("confirmPassword")}
+          label="Повторіть пароль"
+          type="password"
+          error={getErrorMessage("confirmPassword")}
+        />
+
+        <Button type="submit" className="mb-6 mt-5">
+          Створити особистий кабінет
+        </Button>
       </form>
     </div>
   )
