@@ -1,6 +1,6 @@
 export type CardRecord = {
   id: string
-  age: number
+  date: Date | number
   height: number
   weight: number
 }

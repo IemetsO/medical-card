@@ -1,4 +1,5 @@
 "use client"
+import { differenceInMonths, parseISO } from "date-fns"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect } from "react"
@@ -38,6 +39,17 @@ export default function CardItem() {
     return null
   }
 
+  const newRecords = records.map((record) => {
+    const dateOfBirth = parseISO(card.dateOfBirth)
+    const dateOfMeasurement = new Date(record.date)
+    const months = differenceInMonths(dateOfMeasurement, dateOfBirth)
+
+    return {
+      ...record,
+      date: months,
+    }
+  })
+
   return (
     <div className="m-auto max-w-md rounded-md border-slate-400 bg-gray-50 p-8 text-center ">
       <div className="flex flex-row place-content-between items-baseline">
@@ -65,7 +77,7 @@ export default function CardItem() {
 
       {records.length > 0 && (
         <div>
-          <IndicatorsTable id={cardId} records={records} />
+          <IndicatorsTable id={cardId} records={newRecords} />
           <Link href={`/cards/${cardId}/charts`} className="mb-6 mt-5">
             <Button>Побудувати графік</Button>
           </Link>
