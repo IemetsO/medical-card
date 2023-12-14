@@ -1,4 +1,4 @@
-name: Run web lint
+name: Run lint
 
 concurrency:
   group: ${{ github.ref }}-lint
@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [lts/hydrogen, lts/*]
+        node-version: [lts/iron]
 
     runs-on: ${{ matrix.os }}
 
@@ -21,10 +21,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js ${{ matrix.node }}}
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{ matrix.node-version }}
           cache: "npm"
 
       - name: Install dependencies

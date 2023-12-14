@@ -1,9 +1,9 @@
-const path = require("path")
-
 /** @type {import("eslint").Linter.Config} */
 const config = {
   parser: "@typescript-eslint/parser",
-  parserOptions: { project: path.join(__dirname, "tsconfig.json") },
+  parserOptions: {
+    project: true,
+  },
   plugins: ["@typescript-eslint"],
   extends: [
     "next/core-web-vitals",
@@ -12,6 +12,34 @@ const config = {
     "prettier",
   ],
   rules: {
+    "no-console": ["error", { allow: ["warn", "error"] }],
+    curly: ["error", "all"],
+    "@typescript-eslint/array-type": "off",
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+
+    "@typescript-eslint/consistent-type-imports": [
+      "warn",
+      { prefer: "type-imports", fixStyle: "inline-type-imports" },
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        ignoreRestSiblings: true,
+        argsIgnorePattern: "^_",
+        destructuredArrayIgnorePattern: "^_",
+      },
+    ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      { checksVoidReturn: { attributes: false } },
+    ],
+    "import/no-unused-modules": [
+      "warn",
+      {
+        unusedExports: true,
+        ignoreExports: ["**/app/**/page.tsx", "./*.ts", "**/app/**/layout.tsx"],
+      },
+    ],
     "no-restricted-imports": [
       "error",
       {
@@ -69,39 +97,6 @@ const config = {
       },
     ],
     "import/newline-after-import": "error",
-    curly: ["error", "all"],
-    "@typescript-eslint/consistent-type-imports": [
-      "warn",
-      {
-        prefer: "type-imports",
-        fixStyle: "inline-type-imports",
-      },
-    ],
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      {
-        ignoreRestSiblings: true,
-        argsIgnorePattern: "^_",
-        destructuredArrayIgnorePattern: "^_",
-      },
-    ],
-    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
-    "react-hooks/rules-of-hooks": "off",
-    "@typescript-eslint/no-misused-promises": [
-      "error",
-      { checksVoidReturn: false },
-    ],
-    "@typescript-eslint/no-floating-promises": "off",
-    "@typescript-eslint/restrict-template-expressions": "off",
-    "no-console": ["error", { allow: ["warn", "error"] }],
-    "import/no-unused-modules": [
-      "warn",
-      {
-        unusedExports: true,
-        ignoreExports: ["app/**/page.tsx", "./*.ts", "app/**/layout.tsx"],
-      },
-    ],
-    "@typescript-eslint/prefer-nullish-coalescing": "off",
   },
 }
 

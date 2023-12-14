@@ -21,8 +21,8 @@ export default function Login() {
       email: Yup.string().required("Обов'язкове поле"),
       password: Yup.string().min(7).required("Обов'язкове поле"),
     }),
-    onSubmit: (values) => {
-      login(values.email, values.password)
+    onSubmit: async (values) => {
+      await login(values.email, values.password)
       router.push(`/cards`)
     },
   })

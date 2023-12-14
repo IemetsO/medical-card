@@ -1,9 +1,11 @@
 "use client"
 import { onAuthStateChanged } from "firebase/auth"
-import { useEffect, useState } from "react"
+import type { User as FirebaseUser } from "firebase/auth"
+import { useEffect, useMemo, useState } from "react"
 import React from "react"
 
 import { getUser } from "@/domains/auth/services"
+import { type User } from "@/domains/auth/types"
 import { auth } from "@/services/firebase"
 
 import { AuthContext, type AuthContextType } from "./context"
@@ -13,45 +15,46 @@ type Props = {
 }
 
 export function AuthProvider({ children }: Props) {
-  const [contextValue, setContextValue] = useState<AuthContextType>({
-    firebaseUser: undefined,
-    user: undefined,
-    isInitialized: false,
-  })
+  const [isInitialized, setIsInitialized] = useState(false)
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null)
+  const [user, setUser] = useState<User | undefined>()
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-
-      async (changedFirebaseUser) => {
-        if (!changedFirebaseUser) {
-          setContextValue({
-            firebaseUser: undefined,
-            user: undefined,
-            isInitialized: true,
-          })
-          return
-        }
-
-        const changedUser = await getUser(changedFirebaseUser.uid)
-        if (!changedUser) {
-          setContextValue({
-            firebaseUser: undefined,
-            user: undefined,
-            isInitialized: true,
-          })
-          return
-        }
-
-        setContextValue({
-          firebaseUser: changedFirebaseUser,
-          user: changedUser,
-          isInitialized: true,
-        })
-      },
-    )
+    const unsubscribe = onAuthStateChanged(auth, (changedFirebaseUser) => {
+      setFirebaseUser(changedFirebaseUser)
+      setIsInitialized(true)
+    })
     return unsubscribe
   }, [])
+
+  useEffect(() => {
+    const loadUser = async () => {
+      if (!firebaseUser) {
+        setUser(undefined)
+        return
+      }
+
+      const changedUser = await getUser(firebaseUser.uid)
+      if (!changedUser) {
+        setFirebaseUser(null)
+        setUser(undefined)
+        return
+      }
+
+      setUser(changedUser)
+    }
+
+    loadUser().catch(console.error)
+  }, [firebaseUser])
+
+  const contextValue: AuthContextType = useMemo(
+    () => ({
+      firebaseUser: firebaseUser ?? undefined,
+      user,
+      isInitialized,
+    }),
+    [firebaseUser, user, isInitialized],
+  )
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>

@@ -10,8 +10,8 @@ import { deleteCard } from "@/domains/card/services"
 export default function Cards() {
   const { cards } = useCards()
 
-  function handleDelete(id: string) {
-    deleteCard(id)
+  async function handleDelete(id: string) {
+    await deleteCard(id)
     toast.success("Карточку видалено!")
   }
 

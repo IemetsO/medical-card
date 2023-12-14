@@ -31,8 +31,8 @@ export const IndicatorsTable = ({ id, records }: Props) => {
               <td>{calculateBMI(item.weight, item.height)}кг/м2</td>
               <td>
                 <Button
-                  onClick={() => {
-                    deleteCardRecord(id, item.id)
+                  onClick={async () => {
+                    await deleteCardRecord(id, item.id)
                   }}
                 >
                   🗑

@@ -1,4 +1,4 @@
-import { cn } from "@/utils"
+import { cn } from "@/utilities/cn"
 
 type Props = React.SelectHTMLAttributes<HTMLSelectElement> & {
   label?: React.ReactNode

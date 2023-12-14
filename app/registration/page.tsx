@@ -29,8 +29,8 @@ export default function Registration() {
         .oneOf([Yup.ref("password")], "Паролі повинні співпадати")
         .required("Обов'язкове поле"),
     }),
-    onSubmit: ({ confirmPassword, ...requestData }) => {
-      signUp(requestData)
+    onSubmit: async ({ confirmPassword, ...requestData }) => {
+      await signUp(requestData)
       toast.success("Особистий кабінет створено")
       router.push(`/cards`)
     },

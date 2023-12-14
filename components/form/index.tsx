@@ -25,12 +25,12 @@ export const Form = ({ id, records }: Props) => {
       weight: Yup.number().required("Обов'язкове поле"),
       height: Yup.number().required("Обов'язкове поле"),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (records.find((recordItem) => recordItem.date === values.date)) {
         toast.error("Показники данного віку внесені")
         return
       }
-      createCardRecord(id, values)
+      await createCardRecord(id, values)
     },
   })
 
