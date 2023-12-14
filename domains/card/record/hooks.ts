@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/auth/hooks"
 import {
   documentSnapshotToCardRecord,
   getCardRecordsCollection,
-} from "./service"
+} from "./services"
 import { type CardRecord } from "./types"
 
 export function useCardRecords(cardId: string): { records: CardRecord[] } {

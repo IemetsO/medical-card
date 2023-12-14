@@ -1,7 +1,7 @@
 import { Table } from "@/components/table"
 import { Button } from "@/components/uikit/button"
 import { calculateBMI } from "@/domains/card/record/helpers"
-import { deleteCardRecord } from "@/domains/card/record/service"
+import { deleteCardRecord } from "@/domains/card/record/services"
 import { type CardRecord } from "@/domains/card/record/types"
 
 type Props = {

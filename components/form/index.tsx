@@ -4,7 +4,7 @@ import * as Yup from "yup"
 
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
-import { createCardRecord } from "@/domains/card/record/service"
+import { createCardRecord } from "@/domains/card/record/services"
 import { type CardRecord } from "@/domains/card/record/types"
 
 type Props = {
