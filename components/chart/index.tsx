@@ -1,7 +1,7 @@
 import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts"
 
 type Props = {
-  datas: Record<string, number>[][]
+  datas: Record<string, number | string>[][]
   xKey: string
   yKey: string
 }

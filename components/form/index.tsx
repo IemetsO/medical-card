@@ -4,7 +4,7 @@ import * as Yup from "yup"
 
 import { Button } from "@/components/uikit/button"
 import { Input } from "@/components/uikit/input"
-import { createCardRecord } from "@/domains/card/record/service"
+import { createCardRecord } from "@/domains/card/record/services"
 import { type CardRecord } from "@/domains/card/record/types"
 
 type Props = {
@@ -15,18 +15,18 @@ type Props = {
 export const Form = ({ id, records }: Props) => {
   const formik = useFormik({
     initialValues: {
-      age: 0,
+      date: new Date(),
       weight: 0,
       height: 0,
     },
 
     validationSchema: Yup.object({
-      age: Yup.number().required("Обов'язкове поле"),
+      date: Yup.date().required("Обов'язкове поле"),
       weight: Yup.number().required("Обов'язкове поле"),
       height: Yup.number().required("Обов'язкове поле"),
     }),
     onSubmit: async (values) => {
-      if (records.find((recordItem) => recordItem.age === values.age)) {
+      if (records.find((recordItem) => recordItem.date === values.date)) {
         toast.error("Показники данного віку внесені")
         return
       }
@@ -39,10 +39,10 @@ export const Form = ({ id, records }: Props) => {
   return (
     <form className="mt-10 " onSubmit={formik.handleSubmit}>
       <Input
-        {...getFieldProps("age")}
+        {...getFieldProps("date")}
         className="text-xs "
-        label="Введіть вік в місяцях"
-        type="number"
+        label="Введіть дату"
+        type="date"
         placeholder="1"
       />
 
